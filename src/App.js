@@ -1,49 +1,49 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+// @flow
 
 import React, { Component } from 'react';
 import {
-  Platform, StyleSheet, Text, View
+  AppState, DeviceEventEmitter
 } from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n Shake or press menu button for dev menu'
-});
+import AppNavigation from 'src/routers';
+// import Initial, { SCREENS } from './routers';
 
 type Props = {};
-export default class App extends Component<Props> {
+type State = {};
+
+export default class App extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    DeviceEventEmitter.addListener('deviceResume', this.onAppResume);
+    DeviceEventEmitter.addListener('devicePause', this.onAppPause);
+    AppState.addEventListener('change', this.onAppStateChange);
+  }
+
+  onAppStateChange = (currentAppState: typeof AppState) => {
+    console.log(currentAppState);
+  };
+
+  onAppResume = () => {
+    console.log('onAppResume');
+  };
+
+  onAppPause = () => {
+    console.log('onAppPause');
+  };
+
+  notificationListener: any;
+
+  notificationDisplayedListener: any;
+
+  navigator: any;
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
+      <AppNavigation
+        key="main"
+        ref={(navigator) => {
+          this.navigator = navigator;
+        }}
+      />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5
-  }
-});

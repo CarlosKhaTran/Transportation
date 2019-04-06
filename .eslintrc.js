@@ -12,7 +12,8 @@ module.exports = {
     'comma-dangle': 'off',
     'react/destructuring-assignment': 'off',
     'import/prefer-default-export': 'off',
-    "global-require": 0
+    "global-require": 0,
+    'no-console': 'off',
   },
   'globals': {
     "fetch": false,
