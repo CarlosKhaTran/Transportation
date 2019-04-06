@@ -20,5 +20,12 @@ module.exports = {
     "React$Node": false,
     "isNaN": false,
     "FormData": false
-  }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["."]
+      }
+    },
+  },
 }
