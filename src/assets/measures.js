@@ -5,6 +5,7 @@ const { width, height } = Dimensions.get('window');
 
 const measures: { [key: string]: number } = {
   defaultUnit: 8,
+  marginHuge: 36,
   marginLong: 24,
   marginMedium: 16,
   marginSmall: 8,
