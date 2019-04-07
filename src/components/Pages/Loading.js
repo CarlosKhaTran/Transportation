@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { Container } from 'src/components/Widgets';
+import { Transition } from 'react-navigation-fluid-transitions';
+import { Container } from 'src/components/Layout';
 import { colors } from 'src/assets';
 import { SCREENS } from 'src/routers/index';
 
@@ -26,7 +27,7 @@ export default class Loading extends Component<Props, State> {
 
   componentDidMount = () => {
     setTimeout(() => {
-      this.navigate(SCREENS.INTRO);
+      this.navigate(SCREENS.LOG_IN);
     }, 2000);
   }
 
@@ -44,9 +45,10 @@ export default class Loading extends Component<Props, State> {
   render() {
     return (
       <Container showBackground={false} style={styles.container}>
-        <Image style={styles.imageBackground} source={require('src/assets/images/background.png')} />
         <View style={styles.image}>
-          <Image style={styles.logo} source={require('src/assets/images/logo.png')} />
+          <Transition shared="logo">
+            <Image style={styles.logo} source={require('src/assets/images/logo.png')} />
+          </Transition>
         </View>
       </Container>
     );
@@ -72,12 +74,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 300,
     height: 80,
-  },
-  imageBackground: {
-    opacity: 0.3,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'stretch',
   },
   loading: {
     transform: [{ scale: 0.5 }]

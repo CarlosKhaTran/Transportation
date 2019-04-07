@@ -5,8 +5,9 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
-import { colors, measures } from 'src/assets';
+import { measures, commonStyles } from 'src/assets';
 
 type Props = {
   children?: ?Array<React$Node>,
@@ -37,7 +38,10 @@ export default class Container extends Component<Props> {
           <View
             style={[styles.container, this.containerStyle(), style]}
           >
-            {children}
+            <Image style={styles.imageBackground} source={require('src/assets/images/background.png')} />
+            <View style={commonStyles.fill}>
+              {children}
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -45,7 +49,10 @@ export default class Container extends Component<Props> {
       <View
         style={[styles.container, this.containerStyle(), style]}
       >
-        {children}
+        <Image style={styles.imageBackground} source={require('src/assets/images/background.png')} />
+        <View style={[commonStyles.fill]}>
+          {children}
+        </View>
       </View>
     );
   }
@@ -59,14 +66,16 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: colors.defaultBackgroundColor,
   },
-  backgroundImage: {
+  imageBackground: {
+    opacity: 0.3,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'stretch',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    resizeMode: 'stretch',
   },
 });

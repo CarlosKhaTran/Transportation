@@ -1,11 +1,11 @@
-import { Platform } from 'react-native';
+import { colors, measures } from 'src/assets/index';
 
 export default {
   text: {
-    fontFamily: Platform.select({
-      ios: 'SourceSansPro-Light',
-      android: 'SourceSansPro-Regular',
-    }),
+    fontFamily: 'SourceSansPro-Regular',
+  },
+  textBold: {
+    fontFamily: 'SourceSansPro-Bold',
   },
   center: {
     justifyContent: 'center',
@@ -13,5 +13,15 @@ export default {
   },
   fill: {
     flex: 1,
+  },
+  shadow: {
+    shadowOpacity: 0.1,
+    elevation: 1,
+    borderRadius: measures.borderRadius,
+    shadowColor: colors.gray,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
   },
 };
