@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
-import { Platform, Image, StyleSheet, View, Text } from 'react-native';
+import {
+  Image, StyleSheet, View, Text
+} from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { NavigationScreenProp } from 'react-navigation';
 import { Container } from 'src/components/Layout';
@@ -9,32 +11,32 @@ import { Input, Button } from 'src/components/Widgets';
 import { SCREENS } from 'src/routers';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>,
+  navigation: NavigationScreenProp<{}>
 };
 type State = {
   username: string,
-  password: string,
+  password: string
 };
 
 export default class LogIn extends React.Component<Props, State> {
   state = {
     username: '',
-    password: '',
-  }
+    password: ''
+  };
 
   onChangeValue = (value: string, name: 'username') => {
     this.setState({
-      [name]: value,
+      [name]: value
     });
-  }
+  };
 
   onLogin = () => {
     const { navigation } = this.props;
     navigation.navigate({
       routeName: SCREENS.TRANSPORT_BILL,
-      key: SCREENS.TRANSPORT_BILL,
+      key: SCREENS.TRANSPORT_BILL
     });
-  }
+  };
 
   render() {
     const { username, password } = this.state;
@@ -45,9 +47,9 @@ export default class LogIn extends React.Component<Props, State> {
         </Transition>
         <View style={styles.content}>
           <View style={styles.formContainer}>
-          <View style={styles.formHeader}>
-            <Text style={styles.title}>Đăng Nhập</Text>
-          </View>
+            <View style={styles.formHeader}>
+              <Text style={styles.title}>Đăng Nhập</Text>
+            </View>
             <Input
               name="username"
               placeholderText="Tên Đăng Nhập"
@@ -55,7 +57,7 @@ export default class LogIn extends React.Component<Props, State> {
               autoCapitalize="none"
               containerStyle={styles.input}
               value={username}
-              preppendIconName="ios-person"
+              prependIconName="ios-person"
               autoFocus
               onChangeValue={this.onChangeValue}
             />
@@ -63,7 +65,7 @@ export default class LogIn extends React.Component<Props, State> {
               name="password"
               placeholderText="Mật khẩu"
               block
-              preppendIconName="ios-key"
+              prependIconName="ios-key"
               autoCapitalize="none"
               passwordInput
               containerStyle={styles.input}
@@ -85,12 +87,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 300,
     height: 80,
-    marginTop: measures.marginExtremeHuge,
+    marginTop: measures.marginExtremeHuge
   },
-  formHeader:{
+  formHeader: {
     alignItems: 'center',
     marginTop: measures.marginSmall,
-    marginBottom: measures.marginHuge,
+    marginBottom: measures.marginHuge
   },
   formContainer: {
     marginHorizontal: measures.marginLong,
@@ -100,19 +102,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: measures.borderRadius,
     marginTop: -(2 * measures.marginLong),
-    ...commonStyles.shadow,
+    ...commonStyles.shadow
   },
   title: {
     fontSize: measures.fontSizeHuge - 10,
     color: colors.black,
-    ...commonStyles.text,
+    ...commonStyles.textBold,
   },
   content: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   input: {
     marginBottom: measures.marginLong
-  },
+  }
 });

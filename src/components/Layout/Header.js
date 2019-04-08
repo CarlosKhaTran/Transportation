@@ -8,7 +8,6 @@ import {
   TextInput,
   Animated,
   Keyboard,
-  Platform
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { SafeAreaView } from 'react-navigation';
@@ -179,7 +178,8 @@ const styles = StyleSheet.create({
   container: {
     height: measures.defaultUnit * 10,
     backgroundColor: colors.primaryColor,
-    zIndex: 0,
+    zIndex: 21,
+    ...commonStyles.shadow,
   },
   searchBarContainer: {
     flex: 1,

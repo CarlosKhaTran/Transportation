@@ -15,6 +15,7 @@ type Props = {
   style?: any,
   haveKeyboard: boolean,
 };
+
 export default class Container extends Component<Props> {
   static defaultProps = {
     children: null,
@@ -37,7 +38,7 @@ export default class Container extends Component<Props> {
         <View style={{ flex: 1 }}>
           <View
             style={[styles.container, this.containerStyle(), style]}
-            >
+          >
             <Image style={styles.imageBackground} source={require('src/assets/images/background.png')} />
             <View style={commonStyles.fill}>
               {children}

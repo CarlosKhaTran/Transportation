@@ -110,7 +110,7 @@ export default class Button extends Component<Props> {
       case 'secondary':
         return (
           <LinearGradient
-            colors={[colors.lightGray]}
+            colors={[colors.white, colors.lightGray]}
             style={styles.gradient}
             end={{ x: 0, y: 0 }}
             start={{ x: 1, y: 0 }}

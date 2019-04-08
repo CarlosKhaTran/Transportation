@@ -5,6 +5,7 @@ import {
   AppState, DeviceEventEmitter
 } from 'react-native';
 import AppNavigation from 'src/routers';
+import { Modal } from 'src/components/Global';
 // import Initial, { SCREENS } from './routers';
 
 type Props = {};
@@ -38,12 +39,16 @@ export default class App extends Component<Props, State> {
 
   render() {
     return (
-      <AppNavigation
-        key="main"
-        ref={(navigator) => {
-          this.navigator = navigator;
-        }}
-      />
+      [
+        <AppNavigation
+          key="main"
+          ref={(navigator) => {
+            this.navigator = navigator;
+          }}
+        />,
+        <Modal.Component
+          key="modal"
+        />]
     );
   }
 }

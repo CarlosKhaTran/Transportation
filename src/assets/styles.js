@@ -2,10 +2,16 @@ import { colors, measures } from 'src/assets/index';
 
 export default {
   text: {
-    fontFamily: 'SourceSansPro-Regular',
+    fontFamily: 'Roboto-Light',
+  },
+  textSemiBold: {
+    fontFamily: 'Roboto-Medium',
+  },
+  textLight: {
+    fontFamily: 'Roboto-Thin',
   },
   textBold: {
-    fontFamily: 'SourceSansPro-Bold',
+    fontFamily: 'Roboto-Medium',
   },
   center: {
     justifyContent: 'center',

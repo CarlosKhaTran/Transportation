@@ -22,8 +22,11 @@ type Props = {
   appendText?: string,
   appendIcon?: string,
   value?: string,
-  preppendIconName: string,
-  preppendIconColor?: string,
+  prependIconName: string,
+  prependIconColor?: string,
+  editable?: boolean,
+  prependIconType?: string,
+  appendIconColor?: string,
 };
 
 type State = {
@@ -49,7 +52,10 @@ export default class Input extends Component<Props, State> {
     appendText: '',
     placeholderText: '',
     appendIcon: '',
-    preppendIconColor: colors.blue,
+    appendIconColor: undefined,
+    editable: true,
+    prependIconType: undefined,
+    prependIconColor: colors.blue,
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State): any {
@@ -74,7 +80,18 @@ export default class Input extends Component<Props, State> {
     _value: 0,
   };
 
+  componentDidMount() {
+    const { editable } = this.props;
+    if (!editable) {
+      this.onFocus();
+    }
+  }
+
   componentDidUpdate() {
+    const { editable } = this.props;
+    if (!editable) {
+      return;
+    }
     if (this.state.injectValue) {
       this.onFocus();
     }
@@ -144,8 +161,11 @@ export default class Input extends Component<Props, State> {
       passwordInput,
       placeholderText,
       appendText,
-      preppendIconName,
-      preppendIconColor,
+      editable,
+      prependIconName,
+      prependIconType,
+      appendIconColor,
+      prependIconColor,
       value,
       appendIcon,
     } = this.props;
@@ -185,7 +205,7 @@ export default class Input extends Component<Props, State> {
           {placeholderText}
         </Animated.Text>
         <View style={styles.prependContainer}>
-          <Icon name={preppendIconName} size="small" color={preppendIconColor} />
+          <Icon name={prependIconName} type={prependIconType} size="small" color={prependIconColor} />
         </View>
         <TextInput
           onFocus={this.onFocus}
@@ -193,6 +213,7 @@ export default class Input extends Component<Props, State> {
           onChangeText={(str: string) => {
             if (onChangeValue) onChangeValue(str, name);
           }}
+          editable={editable}
           onBlur={this.onBlur}
           style={[styles.input, inputStyle]}
           placeholderTextColor={colors.gray}
@@ -217,7 +238,7 @@ export default class Input extends Component<Props, State> {
         )}
         {appendIcon ? (
           <TouchableOpacity style={styles.eyeButton} onPress={this.toggleEyeButton}>
-            <Icon name={appendIcon} size="small" />
+            <Icon name={appendIcon} size="small" color={appendIconColor} />
           </TouchableOpacity>
         ) : null}
       </Animated.View>
