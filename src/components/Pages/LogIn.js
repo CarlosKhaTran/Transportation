@@ -2,11 +2,15 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
+import { NavigationScreenProp } from 'react-navigation';
 import { Container } from 'src/components/Layout';
 import { measures, colors, commonStyles } from 'src/assets/index';
 import { Input, Button } from 'src/components/Widgets';
+import { SCREENS } from 'src/routers';
 
-type Props = {};
+type Props = {
+  navigation: NavigationScreenProp<{}>,
+};
 type State = {
   username: string,
   password: string,
@@ -21,6 +25,14 @@ export default class LogIn extends React.Component<Props, State> {
   onChangeValue = (value: string, name: 'username') => {
     this.setState({
       [name]: value,
+    });
+  }
+
+  onLogin = () => {
+    const { navigation } = this.props;
+    navigation.navigate({
+      routeName: SCREENS.TRANSPORT_BILL,
+      key: SCREENS.TRANSPORT_BILL,
     });
   }
 
@@ -56,7 +68,7 @@ export default class LogIn extends React.Component<Props, State> {
               autoFocus
               onChangeValue={this.onChangeValue}
             />
-            <Button title="ĐĂNG NHẬP" />
+            <Button title="ĐĂNG NHẬP" onPress={this.onLogin} />
           </View>
         </View>
       </Container>

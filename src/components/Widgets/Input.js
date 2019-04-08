@@ -84,6 +84,7 @@ export default class Input extends Component<Props, State> {
     Animated.timing(this.state.transitionAnimValue, {
       toValue: 1,
       duration: 100,
+      useNativeDriver: true,
     }).start(() => {
       if (_.isEmpty(this.props.value)) {
         this.setState({
@@ -107,6 +108,7 @@ export default class Input extends Component<Props, State> {
         Animated.timing(this.state.transitionAnimValue, {
           toValue: 0,
           duration: 100,
+          useNativeDriver: true,
         }).start();
       }
     });
@@ -154,10 +156,6 @@ export default class Input extends Component<Props, State> {
       inputRange: [0, 1],
       outputRange: [0, -24],
     });
-    const fontSize = transitionAnimValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [measures.fontSizeMedium, measures.fontSizeSmall],
-    });
     return (
       <Animated.View
         style={[
@@ -180,7 +178,7 @@ export default class Input extends Component<Props, State> {
                 translateY,
               },
             ],
-            fontSize,
+            fontSize: measures.fontSizeMedium,
             color: !onActive ? colors.gray : colors.softRed,
           }}
         >

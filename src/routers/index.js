@@ -16,6 +16,9 @@ export default createAppContainer(FluidNavigator(
     },
     [SCREENS.LOG_IN]: {
       screen: pages.LogIn,
+    },
+    [SCREENS.TRANSPORT_BILL]: {
+      screen: pages.TransportBill,
     }
   },
   {
