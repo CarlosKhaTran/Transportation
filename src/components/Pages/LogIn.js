@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 300,
     height: 80,
-    marginTop: measures.marginHuge,
+    marginTop: measures.marginExtremeHuge,
   },
   formHeader:{
     alignItems: 'center',
