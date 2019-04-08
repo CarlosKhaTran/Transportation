@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Platform, Image, StyleSheet, View, Text } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { NavigationScreenProp } from 'react-navigation';
 import { Container } from 'src/components/Layout';
@@ -45,6 +45,9 @@ export default class LogIn extends React.Component<Props, State> {
         </Transition>
         <View style={styles.content}>
           <View style={styles.formContainer}>
+          <View style={styles.formHeader}>
+            <Text style={styles.title}>Đăng Nhập</Text>
+          </View>
             <Input
               name="username"
               placeholderText="Tên Đăng Nhập"
@@ -82,7 +85,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 300,
     height: 80,
-    marginTop: measures.marginLong,
+    marginTop: measures.marginExtremeHuge,
+  },
+  formHeader:{
+    alignItems: 'center',
+    marginTop: measures.marginSmall,
+    marginBottom: measures.marginHuge,
   },
   formContainer: {
     marginHorizontal: measures.marginLong,
@@ -94,9 +102,15 @@ const styles = StyleSheet.create({
     marginTop: -(2 * measures.marginLong),
     ...commonStyles.shadow,
   },
+  title: {
+    fontSize: measures.fontSizeHuge - 10,
+    color: colors.black,
+    ...commonStyles.text,
+  },
   content: {
-    justifyContent: 'center',
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   input: {
     marginBottom: measures.marginLong

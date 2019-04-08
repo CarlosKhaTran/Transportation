@@ -15,7 +15,7 @@ export default {
     flex: 1,
   },
   shadow: {
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     elevation: 1,
     borderRadius: measures.borderRadius,
     shadowColor: colors.gray,

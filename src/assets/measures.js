@@ -5,12 +5,14 @@ const { width, height } = Dimensions.get('window');
 
 const measures: { [key: string]: number } = {
   defaultUnit: 8,
+  marginExtremeHuge: 80,
+  marginHuge: 40,
   marginLong: 24,
   marginMedium: 16,
   marginSmall: 8,
   marginTiny: 4,
   borderRadius: 8,
-  fontSizeHuge: 30,
+  fontSizeHuge: 32,
   fontSizeLarge: 16,
   fontSizeMedium: 14,
   fontSizeSmall: 12,
