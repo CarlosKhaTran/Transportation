@@ -93,7 +93,7 @@ export default class Input extends Component<Props, State> {
       return;
     }
     if (this.state.injectValue) {
-      this.onFocus();
+      setTimeout(() => this.onFocus(), 0);
     }
   }
 
