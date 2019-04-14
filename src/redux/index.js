@@ -1,0 +1,54 @@
+import { persistStore, persistReducer } from 'redux-persist';
+import createSagaMiddleware from 'redux-saga';
+import {
+  createStore, applyMiddleware, compose, combineReducers
+} from 'redux';
+import AsyncStorage from '@react-native-community/async-storage';
+import { authStore, transStore } from './reducer';
+import createSaga from './saga';
+
+const config = {
+  key: 'root',
+  storage: AsyncStorage,
+  blacklist: []
+};
+
+const createReducers = () => persistReducer(
+  config,
+  combineReducers({
+    authStore,
+    transStore
+  })
+);
+
+const createMiddlewares = (sagaMiddleware) => {
+  const middlewares = [];
+
+  // Saga Middleware
+  if (sagaMiddleware) {
+    middlewares.push(sagaMiddleware);
+  }
+  return applyMiddleware.apply({}, middlewares);
+};
+
+const buildStore = (reducers, initialState) => {
+  const sagaMiddleware = createSagaMiddleware();
+  const store = createStore(
+    createReducers(reducers),
+    initialState,
+    compose(createMiddlewares(sagaMiddleware))
+  );
+
+  const persistor = persistStore(store);
+  if (module.hot) {
+    module.hot.accept(() => {
+      store.replaceReducer(createReducers(reducers));
+    });
+  }
+
+  store.reducers = createReducers(reducers);
+  sagaMiddleware.run(createSaga());
+  return { persistor, store };
+};
+
+export default buildStore();

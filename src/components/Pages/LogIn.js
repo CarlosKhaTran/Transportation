@@ -24,7 +24,7 @@ export default class LogIn extends React.Component<Props, State> {
     password: ''
   };
 
-  onChangeValue = (value: string, name: 'username') => {
+  onChangeValue = (value: string, name: string) => {
     this.setState({
       [name]: value
     });

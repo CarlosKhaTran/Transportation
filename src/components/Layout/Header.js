@@ -12,7 +12,7 @@ import {
 import { Transition } from 'react-navigation-fluid-transitions';
 import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'src/components/Widgets';
+import { Icon } from 'src/components/Widgets';
 import { measures, colors, commonStyles } from '../../assets';
 
 type Props = {
@@ -22,11 +22,11 @@ type Props = {
   title?: ?string,
   leftIcon?: ?React$Node,
   rightIcon?: ?React$Node,
-  containSearchBar: boolean,
-  onfocusSearch: ?Function,
-  onBlurSearch: ?Function,
-  onChangeSearchText: Function,
-  isTransparent: boolean,
+  containSearchBar?: boolean,
+  onfocusSearch?: ?Function,
+  onBlurSearch?: ?Function,
+  onChangeSearchText?: Function,
+  isTransparent?: boolean,
   anim?: boolean,
 };
 type State = {
@@ -43,6 +43,11 @@ export default class Header extends Component<Props, State> {
     anim: false,
     rightIcon: undefined,
     handleSecretAction: () => {},
+    containSearchBar: false,
+    isTransparent: false,
+    onChangeSearchText: () => {},
+    onfocusSearch: () => {},
+    onBlurSearch: () => {},
   }
 
   state = {

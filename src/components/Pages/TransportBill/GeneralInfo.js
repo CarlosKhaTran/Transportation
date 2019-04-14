@@ -1,53 +1,71 @@
 // @flow
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { measures, colors, commonStyles } from 'src/assets';
+import { Icon, Input } from 'src/components/Widgets';
 
-export default ({
-  storeName, date, staff, routeNum
-}: {
-  storeName: string,
-  date: string,
-  staff: string,
-  routeNum: string,
-}) => (
+export default () => (
   <View style={styles.container}>
-    <View style={styles.row}>
-      <Text style={styles.tittle}>Tên cửa hàng:</Text>
-      <Text style={styles.detail}>{storeName}</Text>
+    <View style={styles.rowTitleContainer}>
+      <Icon name="ios-funnel" color={colors.gray} />
+      <Text style={styles.rowTitle}>Bộ lọc: </Text>
+      <TouchableOpacity style={styles.tag}>
+        <Text>Chưa xác nhận</Text>
+      </TouchableOpacity>
     </View>
-    <View style={styles.row}>
-      <Text style={styles.tittle}>Thời gian:</Text>
-      <Text style={styles.detail}>{date}</Text>
-    </View>
-    <View style={styles.row}>
-      <Text style={styles.tittle}>Nhân viên:</Text>
-      <Text style={styles.detail}>{staff}</Text>
-    </View>
-    <View style={styles.row}>
-      <Text style={styles.tittle}>Tuyến Giao:</Text>
-      <Text style={styles.detail}>{routeNum}</Text>
-    </View>
+    <Input
+      value=""
+      name="searchValue"
+      block
+      containerStyle={styles.input}
+      placeholderText="SL thực nhận"
+      prependIconColor={colors.gray}
+      prependIconName="ios-search"
+      appendIcon="ios-close-circle"
+      appendIconColor={colors.gray}
+    />
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
-    padding: measures.paddingSmall,
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.white,
+    flex: 1
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: measures.marginSmall,
+    marginBottom: measures.marginSmall
   },
-  tittle: {
-    ...commonStyles.textLight,
+  rowTitle: {
+    ...commonStyles.textBold,
     color: colors.black,
+    paddingHorizontal: measures.paddingSmall
   },
   detail: {
     ...commonStyles.text,
-    color: colors.black,
+    color: colors.black
+  },
+  rowTitleContainer: {
+    paddingHorizontal: measures.paddingMedium,
+    paddingVertical: measures.paddingSmall,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  tag: {
+    height: measures.defaultUnit * 3,
+    paddingHorizontal: measures.paddingMedium,
+    borderRadius: measures.defaultUnit * 1.5,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    backgroundColor: colors.smoke,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  input: {
+    marginHorizontal: measures.marginMedium,
   }
 });

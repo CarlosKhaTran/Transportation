@@ -18,7 +18,7 @@ export default createAppContainer(FluidNavigator(
       screen: pages.LogIn,
     },
     [SCREENS.LOG_IN_BY_STOREID]: {
-      screen: pages.LogInByStoreID,
+      screen: pages.LogInByStoreId,
     },
     [SCREENS.TRANSPORT_BILL]: {
       screen: pages.TransportBill,

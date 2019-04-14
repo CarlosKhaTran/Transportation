@@ -22,7 +22,7 @@ export default class LogInByStoreID extends React.Component<Props, State> {
     storeId: '',
   };
 
-  onChangeValue = (value: string, name: 'storeId') => {
+  onChangeValue = (value: string, name: string) => {
     this.setState({
       [name]: value
     });

@@ -10,16 +10,18 @@ import {
 import { measures, commonStyles } from 'src/assets';
 
 type Props = {
-  children?: ?Array<React$Node>,
-  pad: ?boolean,
+  children?: any,
+  pad?: boolean,
   style?: any,
-  haveKeyboard: boolean,
+  haveKeyboard?: boolean,
 };
 
 export default class Container extends Component<Props> {
   static defaultProps = {
     children: null,
     style: {},
+    haveKeyboard: false,
+    pad: false,
   }
 
   onDismissKeyboard = () => {

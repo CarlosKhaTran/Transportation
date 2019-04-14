@@ -155,6 +155,7 @@ export default class TransportBill extends React.Component<Props, State> {
     return (
       <Container>
         <Header
+          containSearchBar
           title="ĐƠN HÀNG VẬN CHUYỂN"
           rightIcon={<Icon name="list" type="ent" color={colors.white} />}
           handleRightButton={() => {}}

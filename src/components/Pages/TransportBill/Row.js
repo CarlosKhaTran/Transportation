@@ -27,6 +27,7 @@ export default ({ item }: { item: Bill }) => {
         <Input
           value={productCode}
           block
+          name="productCode"
           containerStyle={styles.input}
           placeholderText="Mã sản phẩm"
           editable={false}
@@ -37,6 +38,7 @@ export default ({ item }: { item: Bill }) => {
         />
         <Input
           value={quantDeliveried}
+          name="quantDeliveried"
           block
           containerStyle={styles.input}
           placeholderText="SL thực giao"
@@ -51,6 +53,7 @@ export default ({ item }: { item: Bill }) => {
           <View style={commonStyles.fill}>
             <Input
               value={quantReceived}
+              name="quantReceived"
               block
               containerStyle={styles.input}
               placeholderText="SL thực nhận"
@@ -62,6 +65,7 @@ export default ({ item }: { item: Bill }) => {
           <View style={commonStyles.fill}>
             <Input
               value={quantChecked}
+              name="quantChecked"
               block
               containerStyle={styles.input}
               placeholderText="SL kiểm đếm"
@@ -72,6 +76,7 @@ export default ({ item }: { item: Bill }) => {
         </View>
         <Input
           value={note}
+          name="note"
           block
           containerStyle={styles.input}
           placeholderText="Ghi chú"
