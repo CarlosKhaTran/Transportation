@@ -48,7 +48,7 @@ export default class Button extends Component<Props> {
           marginBottom: bottom,
           ...commonStyles.shadow,
           marginHorizontal: measures.marginSmall,
-          width: !block ? measures.buttonWidth : '100',
+          width: !block ? measures.buttonWidth : null,
         };
       case 'text':
         return {
@@ -64,7 +64,7 @@ export default class Button extends Component<Props> {
           height,
           marginBottom: bottom,
           marginHorizontal: measures.marginSmall,
-          width: !block ? measures.buttonWidth : '100%',
+          width: !block ? measures.buttonWidth : null,
         };
     }
   }

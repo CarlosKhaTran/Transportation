@@ -15,6 +15,10 @@ export default () => (
       <TouchableOpacity style={styles.tag}>
         <Text>Chưa xác nhận</Text>
       </TouchableOpacity>
+      <Text style={styles.detail}>
+        {'Tổng cộng: '}
+        <Text style={{ color: colors.green }}>555</Text>
+      </Text>
     </View>
     <Input
       value=""
@@ -43,11 +47,13 @@ const styles = StyleSheet.create({
   rowTitle: {
     ...commonStyles.textBold,
     color: colors.black,
-    paddingHorizontal: measures.paddingSmall
+    paddingHorizontal: measures.paddingSmall,
   },
   detail: {
     ...commonStyles.text,
-    color: colors.black
+    color: colors.black,
+    flex: 1,
+    textAlign: 'right',
   },
   rowTitleContainer: {
     paddingHorizontal: measures.paddingMedium,
@@ -66,6 +72,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   input: {
-    marginHorizontal: measures.marginMedium,
+    marginHorizontal: measures.marginMedium
   }
 });

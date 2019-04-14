@@ -33,6 +33,9 @@ const colors: { [key: string]: string } = {
   greensea: '#16a085',
   loadingBackground: '#b3e5fc',
   seperator: '#F1F1F1',
-  lemon: '#f7ca18'
+  lemon: '#f7ca18',
+  lightGreen: '#7befb2',
+  mediumGreen: '#4ecdc4',
+  darkGreen: '#3fc380',
 };
 export default colors;

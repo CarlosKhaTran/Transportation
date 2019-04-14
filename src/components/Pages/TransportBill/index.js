@@ -4,13 +4,14 @@ import {
   Animated, View, StyleSheet, TouchableOpacity
 } from 'react-native';
 import { Container, Header } from 'src/components/Layout';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { colors, commonStyles, measures } from 'src/assets';
 import { Icon } from 'src/components/Widgets';
 import { Modal } from 'src/components/Global';
 import Row from './Row';
 import GeneralInfo from './GeneralInfo';
 import RatingView from './RatingView';
+import billsFake from './fakeData';
 
 type Props = {};
 type State = {
@@ -28,33 +29,6 @@ type Bill = {
   note: string
 };
 
-const billsFake: Array<Bill> = [
-  {
-    productCode: '10071662',
-    productName: 'UNITEK-MA DUI GA CN',
-    quantDeliveried: '1 KG',
-    quantReceived: '',
-    quantChecked: '',
-    note: ''
-  },
-  {
-    productCode: '10071663',
-    productName: 'UNITEK-DOI TOI GA CN',
-    quantDeliveried: '1 KG',
-    quantReceived: '',
-    quantChecked: '',
-    note: ''
-  },
-  {
-    productCode: '10071664',
-    productName: 'UNITEK-CANH GA CN',
-    quantDeliveried: '1 KG',
-    quantReceived: '',
-    quantChecked: '',
-    note: ''
-  }
-];
-
 const generalInfo = {
   storeName: 'VM+HCM 520 quốc lộ 13',
   date: '02/04/2019',
@@ -65,7 +39,7 @@ const generalInfo = {
 const NAVBAR_HEIGHT = 120;
 const scrollAnim = new Animated.Value(0);
 const offsetAnim = new Animated.Value(0);
-const AnimatedListView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
+const AnimatedListView = Animated.createAnimatedComponent(KeyboardAwareFlatList);
 
 export default class TransportBill extends React.Component<Props, State> {
   state = {
@@ -133,12 +107,13 @@ export default class TransportBill extends React.Component<Props, State> {
     clearTimeout(this.scrollEndTimer);
   };
 
-  renderItem = ({ item }: { item: Bill }) => <Row item={item} />;
-
+  renderItem = ({ item, index }: { item: Bill, index: number }) => (
+    <Row item={item} index={index} />
+  );
 
   onSubmit = () => {
     Modal.show(<RatingView />);
-  }
+  };
 
   scrollEndTimer: any;
 
@@ -155,7 +130,6 @@ export default class TransportBill extends React.Component<Props, State> {
     return (
       <Container>
         <Header
-          containSearchBar
           title="ĐƠN HÀNG VẬN CHUYỂN"
           rightIcon={<Icon name="list" type="ent" color={colors.white} />}
           handleRightButton={() => {}}
@@ -169,14 +143,13 @@ export default class TransportBill extends React.Component<Props, State> {
               [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
               { useNativeDriver: true }
             )}
+            data={bills}
             onMomentumScrollBegin={this.onMomentumScrollBegin}
             onMomentumScrollEnd={this.onMomentumScrollEnd}
             onScrollEndDrag={this.onScrollEndDrag}
-          >
-            {bills.map(item => (
-              <Row item={item} key={item.productCode} />
-            ))}
-          </AnimatedListView>
+            renderItem={this.renderItem}
+            keyExtractor={(item, index) => item.productCode + index}
+          />
           <Animated.View
             style={{
               transform: [{ translateY: navbarTranslate }],
@@ -210,6 +183,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    paddingTop: measures.paddingSmall / 2,
+    paddingTop: measures.paddingSmall / 2
   }
 });
