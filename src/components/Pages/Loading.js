@@ -27,7 +27,7 @@ export default class Loading extends Component<Props, State> {
 
   componentDidMount = () => {
     setTimeout(() => {
-      this.navigate(SCREENS.LOG_IN);
+      this.navigate(SCREENS.LOG_IN_BY_STOREID);
     }, 2000);
   }
 
