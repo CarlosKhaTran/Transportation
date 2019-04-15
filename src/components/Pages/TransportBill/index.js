@@ -3,11 +3,12 @@ import React from 'react';
 import {
   Animated, View, StyleSheet, TouchableOpacity
 } from 'react-native';
-import { Container, Header } from 'src/components/Layout';
+import { connect } from 'react-redux';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { colors, commonStyles, measures } from 'src/assets';
-import { Icon } from 'src/components/Widgets';
-import { Modal } from 'src/components/Global';
+import { Container, Header } from '../../Layout';
+import { colors, commonStyles, measures } from '../../../assets';
+import { Icon } from '../../Widgets';
+import { Modal } from '../../Global';
 import Row from './Row';
 import GeneralInfo from './GeneralInfo';
 import RatingView from './RatingView';
@@ -41,7 +42,7 @@ const scrollAnim = new Animated.Value(0);
 const offsetAnim = new Animated.Value(0);
 const AnimatedListView = Animated.createAnimatedComponent(KeyboardAwareFlatList);
 
-export default class TransportBill extends React.Component<Props, State> {
+export class TransportBill extends React.Component<Props, State> {
   state = {
     bills: billsFake,
     scrollAnim,
@@ -127,6 +128,7 @@ export default class TransportBill extends React.Component<Props, State> {
       outputRange: [0, -NAVBAR_HEIGHT],
       extrapolate: 'clamp'
     });
+    console.log('vvvvvvvvv', this.props);
     return (
       <Container>
         <Header
@@ -170,6 +172,15 @@ export default class TransportBill extends React.Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log('>>>>', state);
+  return {
+    xxx: 1,
+  };
+};
+
+export default connect(mapStateToProps)(TransportBill);
 
 const styles = StyleSheet.create({
   sendButton: {

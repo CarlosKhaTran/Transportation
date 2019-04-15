@@ -4,8 +4,8 @@ import React from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity
 } from 'react-native';
-import { measures, colors, commonStyles } from 'src/assets';
-import { Icon, Input } from 'src/components/Widgets';
+import { measures, colors, commonStyles } from '../../../assets';
+import { Icon, Input } from '../../Widgets';
 
 export default () => (
   <View style={styles.container}>

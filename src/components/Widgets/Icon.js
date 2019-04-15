@@ -12,7 +12,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import Octicon from 'react-native-vector-icons/Octicons';
 import Zocial from 'react-native-vector-icons/Zocial';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import { colors, measures } from 'src/assets';
+import { colors, measures } from '../../assets';
 
 function getSize(size: number | 'small' | 'large' | 'medium') {
   if ((typeof (size) === 'number') && size > 0) return size;

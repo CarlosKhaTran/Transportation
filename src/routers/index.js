@@ -1,7 +1,7 @@
 // @flow
 import { createAppContainer } from 'react-navigation';
 import { FluidNavigator } from 'react-navigation-fluid-transitions';
-import * as pages from 'src/components/Pages';
+import * as pages from '../components/Pages';
 import SCREENS from './screens';
 
 export { default as SCREENS } from './screens';

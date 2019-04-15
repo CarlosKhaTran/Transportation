@@ -5,8 +5,8 @@ import _ from 'lodash';
 import {
   View, StyleSheet, Text, TouchableOpacity, TextInput,
 } from 'react-native';
-import { commonStyles, colors, measures } from 'src/assets';
-import { Icon, Button } from 'src/components/Widgets';
+import { commonStyles, colors, measures } from '../../../assets';
+import { Icon, Button } from '../../Widgets';
 
 type Props = {};
 type State = {

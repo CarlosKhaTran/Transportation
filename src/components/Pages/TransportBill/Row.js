@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity
 } from 'react-native';
-import { Icon, Input } from 'src/components/Widgets';
-import { measures, colors, commonStyles } from 'src/assets';
+import { Icon, Input } from '../../Widgets';
+import { measures, colors, commonStyles } from '../../../assets';
 
 type Bill = {
   productCode: string,

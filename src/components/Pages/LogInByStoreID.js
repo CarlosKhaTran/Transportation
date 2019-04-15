@@ -5,10 +5,10 @@ import {
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { NavigationScreenProp } from 'react-navigation';
-import { Container } from 'src/components/Layout';
-import { measures, colors, commonStyles } from 'src/assets/index';
-import { Input, Button } from 'src/components/Widgets';
-import { SCREENS } from 'src/routers';
+import { Container } from '../Layout';
+import { measures, colors, commonStyles } from '../../assets';
+import { Input, Button } from '../Widgets';
+import { SCREENS } from '../../routers';
 
 type Props = {
   navigation: NavigationScreenProp<{}>
@@ -41,7 +41,7 @@ export default class LogInByStoreID extends React.Component<Props, State> {
     return (
       <Container haveKeyboard>
         <Transition shared="logo">
-          <Image style={styles.logo} source={require('src/assets/images/logo.png')} />
+          <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
         </Transition>
         <View style={styles.content}>
           <View style={styles.formContainer}>

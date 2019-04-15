@@ -2,12 +2,12 @@
 
 import React, { Component } from 'react';
 import { AppState, DeviceEventEmitter, View } from 'react-native';
-import AppNavigation from 'src/routers';
-import { Modal } from 'src/components/Global';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import store from 'src/redux';
-import { commonStyles } from 'src/assets/index';
+import store from './store';
+import AppNavigation from './routers';
+import { Modal } from './components/Global';
+import { commonStyles } from './assets';
 // import Initial, { SCREENS } from './routers';
 
 type Props = {};
