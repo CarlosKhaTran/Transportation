@@ -14,6 +14,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     "global-require": 0,
     'no-console': 'off',
+    'import/no-cycle': 'off',
   },
   'globals': {
     "fetch": false,
