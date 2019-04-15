@@ -23,7 +23,8 @@ export default class SuccessView extends React.PureComponent<Props, State> {
           <Text style={styles.title}>ĐÁNH GIÁ DỊCH VỤ</Text>
         </View>
         <View style={styles.content}>
-          <Text>Gửi Thành Công</Text>
+            <Icon name="ios-checkmark-circle-outline" size="large" color={colors.blue} />
+          <Text style={styles.body}>Gửi Thành Công</Text>
         </View>
       </View>
     );
@@ -49,6 +50,11 @@ const styles = StyleSheet.create({
     ...commonStyles.textBold,
     color: colors.white,
     marginLeft: measures.marginMedium
+  },
+  body: {
+    color: colors.black,
+    marginTop: measures.marginMedium,
+    fontSize: measures.fontSizeLarge,
   },
   content: {
     flexDirection: 'column',
