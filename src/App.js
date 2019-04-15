@@ -1,11 +1,13 @@
 // @flow
 
 import React, { Component } from 'react';
-import {
-  AppState, DeviceEventEmitter
-} from 'react-native';
+import { AppState, DeviceEventEmitter, View } from 'react-native';
 import AppNavigation from 'src/routers';
 import { Modal } from 'src/components/Global';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/es/integration/react';
+import store from 'src/redux';
+import { commonStyles } from 'src/assets/index';
 // import Initial, { SCREENS } from './routers';
 
 type Props = {};
@@ -39,16 +41,19 @@ export default class App extends Component<Props, State> {
 
   render() {
     return (
-      [
-        <AppNavigation
-          key="main"
-          ref={(navigator) => {
-            this.navigator = navigator;
-          }}
-        />,
-        <Modal.Component
-          key="modal"
-        />]
+      <Provider store={store.store}>
+        <PersistGate persistor={store.persistor}>
+          <View style={commonStyles.fill}>
+            <AppNavigation
+              key="main"
+              ref={(navigator) => {
+                this.navigator = navigator;
+              }}
+            />
+            <Modal.Component key="modal" />
+          </View>
+        </PersistGate>
+      </Provider>
     );
   }
 }
