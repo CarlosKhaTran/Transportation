@@ -1,4 +1,4 @@
-import { colors, measures } from 'src/assets/index';
+import { colors, measures } from '.';
 
 export default {
   text: {

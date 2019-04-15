@@ -7,7 +7,7 @@ import {
   Keyboard,
   Image,
 } from 'react-native';
-import { measures, commonStyles } from 'src/assets';
+import { measures, commonStyles } from '../../assets';
 
 type Props = {
   children?: any,
@@ -41,7 +41,7 @@ export default class Container extends Component<Props> {
           <View
             style={[styles.container, this.containerStyle(), style]}
           >
-            <Image style={styles.imageBackground} source={require('src/assets/images/background.png')} />
+            <Image style={styles.imageBackground} source={require('../../assets/images/background.png')} />
             <View style={commonStyles.fill}>
               {children}
             </View>
@@ -52,7 +52,7 @@ export default class Container extends Component<Props> {
       <View
         style={[styles.container, this.containerStyle(), style]}
       >
-        <Image style={styles.imageBackground} source={require('src/assets/images/background.png')} />
+        <Image style={styles.imageBackground} source={require('../../assets/images/background.png')} />
         <View style={[commonStyles.fill]}>
           {children}
         </View>

@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { Transition } from 'react-navigation-fluid-transitions';
-import { Container } from 'src/components/Layout';
-import { colors } from 'src/assets';
-import { SCREENS } from 'src/routers/index';
+import { Container } from '../Layout';
+import { colors } from '../../assets';
+import { SCREENS } from '../../routers';
 
 type Props = {
   navigation: NavigationScreenProp<{}>,
@@ -47,7 +47,7 @@ export default class Loading extends Component<Props, State> {
       <Container showBackground={false} style={styles.container}>
         <View style={styles.image}>
           <Transition shared="logo">
-            <Image style={styles.logo} source={require('src/assets/images/logo.png')} />
+            <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
           </Transition>
         </View>
       </Container>

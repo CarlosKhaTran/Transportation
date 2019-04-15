@@ -12,7 +12,7 @@ import {
 import { Transition } from 'react-navigation-fluid-transitions';
 import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
-import { Icon } from 'src/components/Widgets';
+import { Icon } from '../Widgets';
 import { measures, colors, commonStyles } from '../../assets';
 
 type Props = {

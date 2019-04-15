@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {
   TextInput, StyleSheet, TouchableOpacity, Text, Animated, View
 } from 'react-native';
-import { measures, colors, commonStyles } from 'src/assets';
+import { measures, colors, commonStyles } from '../../assets';
 import Icon from './Icon';
 
 type Props = {

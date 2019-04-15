@@ -8,12 +8,6 @@ export function navigate(navigation: NavigationScreenProp<{}>, params: {
   params?: ?Object,
 }) {
   const { screenName, key } = params;
-  console.log('xxxx', {
-    screenName,
-    key: key || screenName,
-    params: params.params,
-  });
-
   navigation.navigate.apply({
     screenName,
     key: key || screenName,
