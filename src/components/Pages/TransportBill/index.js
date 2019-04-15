@@ -12,13 +12,16 @@ import Row from './Row';
 import GeneralInfo from './GeneralInfo';
 import RatingView from './RatingView';
 import billsFake from './fakeData';
+import SuccessView from './SuccessView';
 
 type Props = {};
 type State = {
   bills: Array<Bill>,
   scrollAnim: Animated.Value,
   offsetAnim: Animated.Value,
-  clampedScroll: any
+  clampedScroll: any,
+  modalRating: boolean,
+  modalSuccess: boolean,
 };
 type Bill = {
   productCode: string,
@@ -43,6 +46,8 @@ const AnimatedListView = Animated.createAnimatedComponent(KeyboardAwareFlatList)
 
 export default class TransportBill extends React.Component<Props, State> {
   state = {
+    modalRating: false,
+    modalSuccess: false,
     bills: billsFake,
     scrollAnim,
     offsetAnim,
@@ -112,7 +117,26 @@ export default class TransportBill extends React.Component<Props, State> {
   );
 
   onSubmit = () => {
-    Modal.show(<RatingView />);
+    this.setState({
+      ...this.state,
+      modalRating: true,
+      modalSuccess: false
+    })
+  };
+  hideRatingModal = () => {
+    this.setState({
+      ...this.state,
+      modalRating: false,
+      modalSuccess: false
+    })
+  };
+
+  hideRatingModalForSuccessModal = () => {
+    this.setState({
+      ...this.state,
+      modalRating: false,
+      modalSuccess: true,
+    })
   };
 
   scrollEndTimer: any;
@@ -127,6 +151,14 @@ export default class TransportBill extends React.Component<Props, State> {
       outputRange: [0, -NAVBAR_HEIGHT],
       extrapolate: 'clamp'
     });
+    if (this.state.modalRating) {
+      Modal.show(<RatingView onCancel={this.hideRatingModal} onSuccess={this.hideRatingModalForSuccessModal}/>)
+    } else if(!this.state.modalRating && this.state.modalSuccess) {
+      Modal.hide()
+      setTimeout(()=>Modal.show(<SuccessView />),500)
+    } else {
+      Modal.hide()
+    }
     return (
       <Container>
         <Header

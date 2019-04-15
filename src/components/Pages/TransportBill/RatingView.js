@@ -3,11 +3,11 @@
 import React from 'react';
 import _ from 'lodash';
 import {
-  View, StyleSheet, Text, TouchableOpacity, TextInput,
+  View, StyleSheet, Text, TouchableOpacity, TextInput
 } from 'react-native';
 import { commonStyles, colors, measures } from 'src/assets';
+import { Modal } from 'src/components/Global';
 import { Icon, Button } from 'src/components/Widgets';
-
 type Props = {};
 type State = {
   score: number
@@ -47,10 +47,10 @@ export default class RatingView extends React.PureComponent<Props, State> {
         <View />
         <View style={styles.row}>
           <View style={commonStyles.fill}>
-            <Button block type="primary" title="Gửi" />
+            <Button block type="primary" title="Gửi" onPress={this.props.onSuccess} />
           </View>
           <View style={commonStyles.fill}>
-            <Button block type="secondary" title="Huỷ" />
+            <Button block type="secondary" title="Huỷ" onPress={this.props.onCancel} />
           </View>
         </View>
       </View>
