@@ -5,9 +5,7 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
-  InteractionManager,
   TouchableOpacity,
-  Keyboard,
 } from 'react-native';
 import { colors, measures } from '../../assets';
 
@@ -61,17 +59,10 @@ class Modal extends PureComponent<Props, State> {
   }
 
   hide() {
-    const { scale } = this.state;
-    Keyboard.dismiss();
-    Animated.parallel([
-      this.timingAnimation(scale, 0.7, measures.durationShort),
-    ]).start();
-
-    InteractionManager.runAfterInteractions(() => {
-      this.setState({
-        show: false,
-        formComponent: null,
-      });
+    this.setState({
+      show: false,
+      formComponent: null,
+      scale: new Animated.Value(0.7),
     });
   }
 
