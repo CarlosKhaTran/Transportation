@@ -35,7 +35,7 @@ export default class RatingView extends React.PureComponent<Props, State> {
         <View style={styles.content} />
         <Text style={styles.objective}>Mức độ hài lòng:</Text>
         <View style={styles.starContainer}>
-          {_.range(0, 4).map(item => (item - 1 < score ? (
+          {_.range(0, 5).map(item => (item - 1 < score ? (
             <TouchableOpacity key={item.toString()} onPress={() => this.selectScore(item)}>
               <Icon name="ios-star" size="small" color={colors.mango} />
             </TouchableOpacity>
