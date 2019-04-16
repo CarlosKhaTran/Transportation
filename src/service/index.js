@@ -13,3 +13,27 @@ export async function getListBill({ storeID, date }: { storeID: string, date: st
     return undefined;
   }
 }
+
+export async function putInsertBill({bill} : {bill: []}) {
+  try {
+    const url = urls.putInsertBillUrl();
+    const response = await Axios.put(url, bill);
+    const { data } = response
+    return data.items
+  } catch (error) {
+    console.log('Insert Bill Error', error);
+    return undefined;
+  }
+}
+
+export async function putInsertBillRating({ratingContent} : {ratingContent: []}) {
+  try {
+    const url = urls.putInsertRatingUrl();
+    const response = await Axios.put(url, ratingContent);
+    const { data } = response
+    return data.items
+  } catch (error) {
+    console.log('Insert Bill Error', error);
+    return undefined;
+  }
+}
