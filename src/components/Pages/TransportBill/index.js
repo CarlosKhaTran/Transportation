@@ -12,22 +12,17 @@ import { Modal } from '../../Global';
 import Row from './Row';
 import GeneralInfo from './GeneralInfo';
 import RatingView from './RatingView';
-import billsFake from './fakeData';
+import type { Bill } from './type';
 
 type Props = {};
 type State = {
   bills: Array<Bill>,
   scrollAnim: Animated.Value,
   offsetAnim: Animated.Value,
-  clampedScroll: any
-};
-type Bill = {
-  productCode: string,
-  productName: string,
-  quantDeliveried: string,
-  quantReceived: string,
-  quantChecked: string,
-  note: string
+  clampedScroll: any,
+  checkList: {
+    [string]: boolean
+  }
 };
 
 const generalInfo = {
@@ -43,8 +38,18 @@ const offsetAnim = new Animated.Value(0);
 const AnimatedListView = Animated.createAnimatedComponent(KeyboardAwareFlatList);
 
 export class TransportBill extends React.Component<Props, State> {
+  static getDerivedStateFromProps(props: { bills: Array<Bill> }) {
+    const listBill: Array<Bill> = props.bills.map((item: Bill) => ({
+      ...item,
+      actual_Received: item.soBich
+    }));
+    return {
+      bills: listBill
+    };
+  }
+
   state = {
-    bills: billsFake,
+    bills: [],
     scrollAnim,
     offsetAnim,
     clampedScroll: Animated.diffClamp(
@@ -58,7 +63,8 @@ export class TransportBill extends React.Component<Props, State> {
       ),
       0,
       NAVBAR_HEIGHT
-    )
+    ),
+    checkList: {}
   };
 
   clampedScrollValue = 0;
@@ -108,8 +114,23 @@ export class TransportBill extends React.Component<Props, State> {
     clearTimeout(this.scrollEndTimer);
   };
 
+  onCheck = (itemCode: string) => {
+    this.setState((state: State) => ({
+      ...state,
+      checkList: {
+        ...state.checkList,
+        [itemCode]: !state.checkList[itemCode]
+      }
+    }));
+  };
+
   renderItem = ({ item, index }: { item: Bill, index: number }) => (
-    <Row item={item} index={index} />
+    <Row
+      item={item}
+      index={index}
+      checked={this.state.checkList[item.item_Code]}
+      onCheck={this.onCheck}
+    />
   );
 
   onSubmit = () => {
@@ -128,7 +149,6 @@ export class TransportBill extends React.Component<Props, State> {
       outputRange: [0, -NAVBAR_HEIGHT],
       extrapolate: 'clamp'
     });
-    console.log('vvvvvvvvv', this.props);
     return (
       <Container>
         <Header
@@ -150,7 +170,7 @@ export class TransportBill extends React.Component<Props, State> {
             onMomentumScrollEnd={this.onMomentumScrollEnd}
             onScrollEndDrag={this.onScrollEndDrag}
             renderItem={this.renderItem}
-            keyExtractor={(item, index) => item.productCode + index}
+            keyExtractor={(item: Bill, index: number) => item.item_Code + index}
           />
           <Animated.View
             style={{
@@ -173,12 +193,9 @@ export class TransportBill extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log('>>>>', state);
-  return {
-    xxx: 1,
-  };
-};
+const mapStateToProps = state => ({
+  bills: state.transStore.bills
+});
 
 export default connect(mapStateToProps)(TransportBill);
 

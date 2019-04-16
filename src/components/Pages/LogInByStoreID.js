@@ -1,25 +1,29 @@
 // @flow
 import React from 'react';
+import _ from 'lodash';
 import {
   Image, StyleSheet, View, Text
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { NavigationScreenProp } from 'react-navigation';
 import { Container } from '../Layout';
 import { measures, colors, commonStyles } from '../../assets';
 import { Input, Button } from '../Widgets';
 import { SCREENS } from '../../routers';
+import { actions } from '../../store';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>
+  navigation: NavigationScreenProp<{}>,
+  getListBill: (storeID: string, cb: (isSucess: boolean) => void) => void
 };
 type State = {
-  storeId: string,
+  storeID: string,
 };
 
-export default class LogInByStoreID extends React.Component<Props, State> {
+export class LogInByStoreID extends React.Component<Props, State> {
   state = {
-    storeId: '',
+    storeID: ''
   };
 
   onChangeValue = (value: string, name: string) => {
@@ -28,16 +32,27 @@ export default class LogInByStoreID extends React.Component<Props, State> {
     });
   };
 
-  onLogin = () => {
+  callBack = (isSucess: boolean) => {
     const { navigation } = this.props;
-    navigation.navigate({
-      routeName: SCREENS.TRANSPORT_BILL,
-      key: SCREENS.TRANSPORT_BILL
-    });
+    if (isSucess) {
+      navigation.navigate({
+        routeName: SCREENS.TRANSPORT_BILL,
+        key: SCREENS.TRANSPORT_BILL
+      });
+    }
+  }
+
+  onLogin = () => {
+    const { getListBill } = this.props;
+    const { storeID } = this.state;
+    if (_.isEmpty(storeID)) {
+      return;
+    }
+    getListBill(storeID, this.callBack);
   };
 
   render() {
-    const { storeId } = this.state;
+    const { storeID } = this.state;
     return (
       <Container haveKeyboard>
         <Transition shared="logo">
@@ -49,12 +64,13 @@ export default class LogInByStoreID extends React.Component<Props, State> {
               <Text style={styles.title}>Đăng Nhập</Text>
             </View>
             <Input
-              name="storeId"
+              name="storeID"
               placeholderText="Mã Cửa Hàng"
               block
+              keyboardType="numeric"
               autoCapitalize="none"
               containerStyle={styles.input}
-              value={storeId}
+              value={storeID}
               prependIconName="ios-person"
               autoFocus
               onChangeValue={this.onChangeValue}
@@ -66,6 +82,17 @@ export default class LogInByStoreID extends React.Component<Props, State> {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch: Function) => ({
+  getListBill: (storeID: string, cb: (isSucess: boolean) => void) => dispatch(
+    actions.getListBill(storeID, cb)
+  )
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LogInByStoreID);
 
 const styles = StyleSheet.create({
   logo: {
@@ -93,7 +120,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: measures.fontSizeHuge - 10,
     color: colors.black,
-    ...commonStyles.textBold,
+    ...commonStyles.textBold
   },
   content: {
     flex: 1,

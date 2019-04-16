@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -87,6 +88,7 @@
 		67D8EEECC5E14DF6825BD5A3 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1D9C32A161734AF4BDAE1AB5 /* SourceSansPro-Regular.ttf */; };
 		6AB31A1828E248F5BEF14187 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80A968EF2D654D5FAB44942E /* Entypo.ttf */; };
 		710CE87E3ED2446F9BAC1E10 /* Raleway-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E23E8DFC2A0945768396ADCA /* Raleway-ExtraLightItalic.ttf */; };
+		7378D1BD39204E619A6B1AFE /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C8181CFA9E4715AA54615E /* libRNCAsyncStorage.a */; };
 		74AE0A1711B44D98B85470EE /* Raleway-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 272E874E3B5F41C5A9A03614 /* Raleway-BoldItalic.ttf */; };
 		757D69D897F84DDA91E759AB /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD670B16E63346AA89BB79C9 /* FontAwesome.ttf */; };
 		76CC786B84C04ED1B1878BFB /* GothamBookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68EB571DA7A248208F45CC9B /* GothamBookItalic.ttf */; };
@@ -154,7 +156,6 @@
 		F3C972449613424A95B39D1A /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2BE3B6E68AD4815987075CB /* SourceSansPro-Bold.ttf */; };
 		FB156822E3D54FFA9BF159BD /* DIN.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE67DAB174C34EB890082654 /* DIN.ttf */; };
 		FB46A282F9CF4B32A13F45D4 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55545F5CBD3445CA8FEB7F1F /* FontAwesome5_Solid.ttf */; };
-		7378D1BD39204E619A6B1AFE /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C8181CFA9E4715AA54615E /* libRNCAsyncStorage.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -290,6 +291,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
 			remoteInfo = "double-conversion-tvOS";
+		};
+		313EF9C5226551870021FB23 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 541671642B7A449CB4FC1ACB /* RNCAsyncStorage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCAsyncStorage;
 		};
 		31638D002259DE3000DF3ABB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -561,6 +569,7 @@
 		17C52AD3892748AEACF3DA41 /* Raleway-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Raleway-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		18630BDFCDFE45D4801E8FE3 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Regular.ttf"; path = "../src/assets/fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		189D9782F726447C83C31FB2 /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.ttf"; path = "../src/assets/fonts/SourceSansPro-Black.ttf"; sourceTree = "<group>"; };
+		18C8181CFA9E4715AA54615E /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCAsyncStorage.a; sourceTree = "<group>"; };
 		1D9C32A161734AF4BDAE1AB5 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../src/assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		1F3CE28F198B4CBEBF2F1912 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		1F5DD7D19CE04909BFDE557B /* GothamMedium_1.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GothamMedium_1.ttf; path = ../src/assets/fonts/GothamMedium_1.ttf; sourceTree = "<group>"; };
@@ -589,6 +598,7 @@
 		4E8DF776436A47BD8FBB26D4 /* Raleway-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-LightItalic.ttf"; path = "../src/assets/fonts/Raleway-LightItalic.ttf"; sourceTree = "<group>"; };
 		4E8FCC97020E4E48A6E85C34 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../src/assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		4EFCA54C5EB24416A7D799CA /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		541671642B7A449CB4FC1ACB /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		55545F5CBD3445CA8FEB7F1F /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		5BBF5F39C8EC48208582A633 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../src/assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		5C65AD0BA9194AA6B746DEBC /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -678,8 +688,6 @@
 		FB5FFB6DCBCE4D358FAA6448 /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBold.ttf"; path = "../src/assets/fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		FC20B534504444878051DFE0 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FFD7514C967D4B1DAA9085A2 /* GothamLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GothamLight.ttf; path = ../src/assets/fonts/GothamLight.ttf; sourceTree = "<group>"; };
-		541671642B7A449CB4FC1ACB /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; name = "RNCAsyncStorage.xcodeproj"; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		18C8181CFA9E4715AA54615E /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; name = "libRNCAsyncStorage.a"; path = "libRNCAsyncStorage.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -874,6 +882,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		313EF9C2226551860021FB23 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				313EF9C6226551870021FB23 /* libRNCAsyncStorage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		31638CFC2259DE3000DF3ABB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,6 +919,7 @@
 				A4817F7B7E5C4461B44459BB /* libRNVectorIcons.a */,
 				293C7549A20D4E88A5A521D3 /* libRNVectorIcons-tvOS.a */,
 				DFA3292D28CE4A6792938F3E /* libBVLinearGradient.a */,
+				18C8181CFA9E4715AA54615E /* libRNCAsyncStorage.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1244,6 +1261,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1310,6 +1328,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 313EF9C2226551860021FB23 /* Products */;
+					ProjectRef = 541671642B7A449CB4FC1ACB /* RNCAsyncStorage.xcodeproj */;
 				},
 				{
 					ProductGroup = 31916536225914130093720C /* Products */;
@@ -1448,6 +1470,13 @@
 			fileType = archive.ar;
 			path = "libdouble-conversion.a";
 			remoteRef = 2DF0FFE82056DD460020B375 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		313EF9C6226551870021FB23 /* libRNCAsyncStorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCAsyncStorage.a;
+			remoteRef = 313EF9C5226551870021FB23 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		31638D012259DE3000DF3ABB /* libRNVectorIcons.a */ = {

@@ -25,6 +25,7 @@ type Props = {
   prependIconName: string,
   prependIconColor?: string,
   editable?: boolean,
+  keyboardType?: 'default' | 'numeric',
   prependIconType?: string,
   appendIconColor?: string,
 };
@@ -51,6 +52,7 @@ export default class Input extends Component<Props, State> {
     appendText: '',
     placeholderText: '',
     appendIcon: '',
+    keyboardType: 'default',
     appendIconColor: undefined,
     editable: true,
     prependIconType: undefined,
@@ -80,8 +82,8 @@ export default class Input extends Component<Props, State> {
   };
 
   componentDidMount() {
-    const { editable } = this.props;
-    if (!editable) {
+    const { editable, value } = this.props;
+    if (!editable || value) {
       this.onFocus();
     }
   }
@@ -167,6 +169,7 @@ export default class Input extends Component<Props, State> {
       prependIconColor,
       value,
       appendIcon,
+      keyboardType,
     } = this.props;
     const {
       showPassword, transitionAnimValue, onActive, _value
@@ -209,6 +212,7 @@ export default class Input extends Component<Props, State> {
         <TextInput
           onFocus={this.onFocus}
           value={value}
+          keyboardType={keyboardType}
           onChangeText={(str: string) => {
             if (onChangeValue) onChangeValue(str, name);
           }}

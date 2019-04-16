@@ -6,11 +6,12 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import { authStore, transStore } from './reducer';
 import createSaga from './saga';
+import * as transActions from './trans/actions';
 
 const config = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: []
+  blacklist: ['transStore']
 };
 
 const createReducers = () => persistReducer(
@@ -52,3 +53,6 @@ const buildStore = (reducers, initialState) => {
 };
 
 export default buildStore();
+export const actions = {
+  ...transActions,
+};

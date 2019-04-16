@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import store from './store';
 import AppNavigation from './routers';
-import { Modal } from './components/Global';
+import { Modal, Loading } from './components/Global';
 import { commonStyles } from './assets';
 // import Initial, { SCREENS } from './routers';
 
@@ -51,6 +51,7 @@ export default class App extends Component<Props, State> {
               }}
             />
             <Modal.Component key="modal" />
+            <Loading.Component />
           </View>
         </PersistGate>
       </Provider>

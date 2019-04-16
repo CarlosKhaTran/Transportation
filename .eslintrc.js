@@ -15,6 +15,7 @@ module.exports = {
     "global-require": 0,
     'no-console': 'off',
     'import/no-cycle': 'off',
+    'camelcase': 'off',
   },
   'globals': {
     "fetch": false,

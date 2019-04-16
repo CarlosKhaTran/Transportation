@@ -5,19 +5,23 @@ import {
 } from 'react-native';
 import { Icon, Input } from '../../Widgets';
 import { measures, colors, commonStyles } from '../../../assets';
+import type { Bill } from './type';
 
-type Bill = {
-  productCode: string,
-  productName: string,
-  quantDeliveried: string,
-  quantReceived: string,
-  quantChecked: string,
-  note: string,
-};
+type Props = {
+  item: Bill,
+  index: number,
+  checked: boolean,
+  onCheck: Function
+}
 
-export default ({ item, index }: { item: Bill, index: number }) => {
+export default ({
+  item,
+  index,
+  checked,
+  onCheck
+}: Props) => {
   const {
-    productCode, productName, quantChecked, quantDeliveried, quantReceived, note
+    item_Code, item_Name, actual_Received, soBich, notes
   } = item;
   const [collapsible, setCollapsible] = useState(false);
   const getColor = () => {
@@ -34,15 +38,17 @@ export default ({ item, index }: { item: Bill, index: number }) => {
     <View style={styles.billContainer}>
       <TouchableOpacity style={styles.billHeader} onPress={() => setCollapsible(!collapsible)}>
         <Icon name="shopping-bag" type="ent" color={getColor()} />
-        <Text style={styles.billName}>{`Sản phẩm: ${productName}`}</Text>
-        <Icon name="square-o" type="fa" color={getColor()} />
+        <Text style={styles.billName}>{`Sản phẩm: ${item_Name}`}</Text>
+        <TouchableOpacity onPress={() => onCheck(item_Code)} style={styles.checkbox}>
+          <Icon name={checked ? 'check-square-o' : 'square-o'} type="fa" color={getColor()} />
+        </TouchableOpacity>
       </TouchableOpacity>
       {collapsible && (
         <View style={styles.billContent}>
           <Input
-            value={productCode}
+            value={item_Code}
             block
-            name="productCode"
+            name="item_code"
             containerStyle={styles.input}
             placeholderText="Mã sản phẩm"
             editable={false}
@@ -52,8 +58,8 @@ export default ({ item, index }: { item: Bill, index: number }) => {
             appendIconColor={colors.softRed}
           />
           <Input
-            value={quantDeliveried}
-            name="quantDeliveried"
+            value={soBich.toString()}
+            name="soBich"
             block
             containerStyle={styles.input}
             placeholderText="SL thực giao"
@@ -64,34 +70,18 @@ export default ({ item, index }: { item: Bill, index: number }) => {
             appendIcon="ios-checkmark"
             appendIconColor={colors.softRed}
           />
-          <View style={styles.row}>
-            <View style={commonStyles.fill}>
-              <Input
-                value={quantReceived}
-                name="quantReceived"
-                block
-                containerStyle={styles.input}
-                placeholderText="SL thực nhận"
-                prependIconColor={colors.jaffa}
-                prependIconName="ios-cube"
-              />
-            </View>
-            <View style={styles.gutter} />
-            <View style={commonStyles.fill}>
-              <Input
-                value={quantChecked}
-                name="quantChecked"
-                block
-                containerStyle={styles.input}
-                placeholderText="SL kiểm đếm"
-                prependIconColor={colors.foutain}
-                prependIconName="ios-checkbox"
-              />
-            </View>
-          </View>
           <Input
-            value={note}
-            name="note"
+            value={actual_Received.toString()}
+            name="actual_Received"
+            block
+            containerStyle={styles.input}
+            placeholderText="SL thực nhận"
+            prependIconColor={colors.jaffa}
+            prependIconName="ios-cube"
+          />
+          <Input
+            value={notes || ''}
+            name="notes"
             block
             containerStyle={styles.input}
             placeholderText="Ghi chú"
@@ -139,6 +129,9 @@ const styles = StyleSheet.create({
     ...commonStyles.text,
     color: colors.primaryColor,
     marginLeft: measures.marginMedium,
-    flex: 1,
+    flex: 1
+  },
+  checkbox: {
+    width: measures.defaultUnit * 4,
   }
 });
