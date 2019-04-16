@@ -11,7 +11,7 @@ type Props = {
   containerStyle?: ?Object,
   inputStyle?: ?Object,
   name: string,
-  error?: ?string,
+  error?: boolean,
   value: string,
   onChangeValue?: (value: string, name: string) => void,
   top?: ?number,
@@ -45,7 +45,7 @@ export default class Input extends Component<Props, State> {
     bottom: measures.marginLong,
     block: false,
     value: '',
-    error: undefined,
+    error: false,
     inputStyle: undefined,
     containerStyle: undefined,
     passwordInput: false,
@@ -134,7 +134,7 @@ export default class Input extends Component<Props, State> {
 
   containerStyle = (): Object => {
     const {
-      top, bottom, block, error
+      top, bottom, block
     } = this.props;
     return {
       marginTop: top,
@@ -142,7 +142,6 @@ export default class Input extends Component<Props, State> {
       marginHorizontal: measures.marginSmall,
       width: !block ? measures.buttonWidth : null,
       alignSelf: !block ? 'center' : null,
-      backgroundColor: error ? colors.sunglo : colors.white,
     };
   }
 
@@ -152,6 +151,17 @@ export default class Input extends Component<Props, State> {
     }));
   };
 
+  getColor = () => {
+    const { onActive } = this.state;
+    const { error } = this.props;
+    if (error) {
+      return colors.rose;
+    }
+    if (onActive) {
+      return colors.lightPrimaryColor;
+    }
+    return colors.smoke;
+  }
 
   render() {
     const {
@@ -172,7 +182,7 @@ export default class Input extends Component<Props, State> {
       keyboardType,
     } = this.props;
     const {
-      showPassword, transitionAnimValue, onActive, _value
+      showPassword, transitionAnimValue, _value
     } = this.state;
     const translateY = transitionAnimValue.interpolate({
       inputRange: [0, 1],
@@ -184,7 +194,7 @@ export default class Input extends Component<Props, State> {
           styles.container,
           this.containerStyle,
           containerStyle,
-          { borderColor: !onActive ? colors.lightGray : colors.softRed, },
+          { borderColor: this.getColor() },
         ]}
       >
         <Animated.Text
@@ -201,7 +211,7 @@ export default class Input extends Component<Props, State> {
               },
             ],
             fontSize: measures.fontSizeMedium,
-            color: !onActive ? colors.gray : colors.softRed,
+            color: this.getColor(),
           }}
         >
           {placeholderText}

@@ -19,16 +19,19 @@ type Props = {
 };
 type State = {
   storeID: string,
+  storeIDError: boolean,
 };
 
 export class LogInByStoreID extends React.Component<Props, State> {
   state = {
-    storeID: ''
+    storeID: '',
+    storeIDError: false,
   };
 
   onChangeValue = (value: string, name: string) => {
     this.setState({
-      [name]: value
+      [name]: value,
+      storeIDError: false,
     });
   };
 
@@ -39,6 +42,10 @@ export class LogInByStoreID extends React.Component<Props, State> {
         routeName: SCREENS.TRANSPORT_BILL,
         key: SCREENS.TRANSPORT_BILL
       });
+    } else {
+      this.setState({
+        storeIDError: true,
+      });
     }
   }
 
@@ -46,13 +53,16 @@ export class LogInByStoreID extends React.Component<Props, State> {
     const { getListBill } = this.props;
     const { storeID } = this.state;
     if (_.isEmpty(storeID)) {
+      this.setState({
+        storeIDError: true,
+      });
       return;
     }
     getListBill(storeID, this.callBack);
   };
 
   render() {
-    const { storeID } = this.state;
+    const { storeID, storeIDError } = this.state;
     return (
       <Container haveKeyboard>
         <Transition shared="logo">
@@ -67,6 +77,7 @@ export class LogInByStoreID extends React.Component<Props, State> {
               name="storeID"
               placeholderText="Mã Cửa Hàng"
               block
+              error={storeIDError}
               keyboardType="numeric"
               autoCapitalize="none"
               containerStyle={styles.input}
