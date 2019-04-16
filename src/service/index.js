@@ -1,6 +1,7 @@
 // @flow
 import Axios from 'axios';
 import * as urls from './urls';
+import type { Bill } from '../components/Pages/TransportBill/type';
 
 export async function getListBill({ storeID, date }: { storeID: string, date: string }) {
   try {
@@ -14,24 +15,24 @@ export async function getListBill({ storeID, date }: { storeID: string, date: st
   }
 }
 
-export async function putInsertBill({bill} : {bill: []}) {
+export async function putInsertBill({ bill }: { bill: Array<Bill> }) {
   try {
     const url = urls.putInsertBillUrl();
     const response = await Axios.put(url, bill);
-    const { data } = response
-    return data.items
+    const { data } = response;
+    return data.items;
   } catch (error) {
     console.log('Insert Bill Error', error);
     return undefined;
   }
 }
 
-export async function putInsertBillRating({ratingContent} : {ratingContent: []}) {
+export async function putInsertBillRating({ ratingContent }: Object) {
   try {
     const url = urls.putInsertRatingUrl();
     const response = await Axios.put(url, ratingContent);
-    const { data } = response
-    return data.items
+    const { data } = response;
+    return data.items;
   } catch (error) {
     console.log('Insert Bill Error', error);
     return undefined;

@@ -9,4 +9,7 @@ export type Bill = {
   actual_Received: number,
   notes: ?string,
   delivery_Date: string,
+  rowId: number,
+  store_Code: string,
+  delivery_Date: string,
 };

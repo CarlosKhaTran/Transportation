@@ -7,12 +7,13 @@ import { connect } from 'react-redux';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { Container, Header } from '../../Layout';
 import { colors, commonStyles, measures } from '../../../assets';
-import { Icon } from '../../Widgets';
-import { Modal } from '../../Global';
+import { Icon, MessagePopup } from '../../Widgets';
+import { Modal, Loading } from '../../Global';
 import Row from './Row';
 import GeneralInfo from './GeneralInfo';
 import RatingView from './RatingView';
 import SuccessView from './SuccessView';
+import { putInsertBill, putInsertBillRating } from '../../../service';
 import type { Bill } from './type';
 
 type Props = {};
@@ -24,6 +25,8 @@ type State = {
   modalRating: boolean,
   modalSuccess: boolean,
   checkList: { [string]: boolean },
+  actualReceivedList: { [string]: string },
+  notesList: { [string]: string }
 };
 
 const generalInfo = {
@@ -67,7 +70,9 @@ export class TransportBill extends React.Component<Props, State> {
       0,
       NAVBAR_HEIGHT
     ),
-    checkList: {}
+    checkList: {},
+    actualReceivedList: {},
+    notesList: {},
   };
 
   clampedScrollValue = 0;
@@ -117,15 +122,36 @@ export class TransportBill extends React.Component<Props, State> {
     clearTimeout(this.scrollEndTimer);
   };
 
-  onCheck = (itemCode: string) => {
+  onCheck = (itemCode: string, check: boolean) => {
     this.setState((state: State) => ({
       ...state,
       checkList: {
         ...state.checkList,
-        [itemCode]: !state.checkList[itemCode]
+        [itemCode]: check,
       }
     }));
   };
+
+  onChangeBill = (value: string, name: string) => {
+    this.setState(state => ({
+      ...state,
+      actualReceivedList: {
+        ...state.actualReceivedList,
+        [name]: value
+      }
+    }));
+  };
+
+  onChangeNotes = (value: string, name: string) => {
+    this.setState(state => ({
+      ...state,
+      notesList: {
+        ...state.notesList,
+        [name]: value
+      }
+    }));
+  };
+
 
   renderItem = ({ item, index }: { item: Bill, index: number }) => (
     <Row
@@ -133,14 +159,81 @@ export class TransportBill extends React.Component<Props, State> {
       index={index}
       checked={this.state.checkList[item.item_Code]}
       onCheck={this.onCheck}
+      onChangeBill={this.onChangeBill}
+      onChangeNotes={this.onChangeNotes}
+      actualReceived={this.state.actualReceivedList[item.item_Code]}
     />
   );
 
+  onInsert = () => {
+    Modal.hide();
+    const { bills, actualReceivedList, notesList } = this.state;
+    const listBills: Array<Bill> = bills.map((item) => {
+      const actualReceived = actualReceivedList[item.item_Code];
+      return {
+        ...item,
+        actual_Received: actualReceived ? parseInt(actualReceived, 10) : item.actual_Received,
+        notes: notesList[item.item_Code] || null,
+      };
+    });
+    Loading.show();
+    putInsertBill({ bill: listBills }).then((res) => {
+      if (res) {
+        this.onRating();
+      }
+      Loading.hide();
+    }).catch((error) => {
+      console.log(error);
+      Loading.hide();
+    });
+  };
+
+  sendRating = (score: number, note: string) => {
+    const { bills } = this.state;
+    const {
+      rowId,
+      store_Code,
+      delivery_Date,
+    } = bills[0];
+    Modal.hide();
+    Loading.show();
+    putInsertBillRating({
+      rowId,
+      store_Code,
+      delivery_Date,
+      rating: score.toString(),
+      ratingNotes: note,
+    }).then((res) => {
+      if (res) {
+        console.log(res);
+        this.hideRatingModalForSuccessModal();
+      }
+      Loading.hide();
+    }).catch((error) => {
+      console.log(error);
+      Loading.hide();
+    });
+  }
+
+  onRating = () => {
+    Modal.show(<RatingView
+      onSuccess={this.sendRating}
+      onCancel={this.hideRatingModal}
+    />);
+  };
+
   onSubmit = () => {
+    const { checkList, bills } = this.state;
+    const isMissing = bills.find(item => !checkList[item.item_Code]);
+    console.log(isMissing);
     Modal.show(
-      <RatingView
-        onCancel={this.hideRatingModal}
-        onSuccess={this.hideRatingModalForSuccessModal}
+      <MessagePopup
+        leftTitle="OK"
+        rightTitle="Cancel"
+        title={isMissing ? 'CHƯA XÁC NHẬN ĐỦ!' : 'GỦI THÔNG TIN'}
+        message={isMissing ? 'Ban có muốn tiếp tục' : 'Bấm Ok để gửi thông tin'}
+        leftAction={this.onInsert}
+        rightAction={() => Modal.hide()}
       />
     );
   };
@@ -150,10 +243,8 @@ export class TransportBill extends React.Component<Props, State> {
   };
 
   hideRatingModalForSuccessModal = () => {
-    Modal.hide(() => {
-      setTimeout(() => Modal.show(<SuccessView />), 500);
-    });
-  }
+    Modal.hide(() => Modal.show(<SuccessView />));
+  };
 
   scrollEndTimer: any;
 
@@ -167,19 +258,6 @@ export class TransportBill extends React.Component<Props, State> {
       outputRange: [0, -NAVBAR_HEIGHT],
       extrapolate: 'clamp'
     });
-    // if (this.state.modalRating) {
-    //   Modal.show(
-    //     <RatingView
-    //       onCancel={this.hideRatingModal}
-    //       onSuccess={this.hideRatingModalForSuccessModal}
-    //     />
-    //   );
-    // } else if (!this.state.modalRating && this.state.modalSuccess) {
-    //   Modal.hide();
-    //   setTimeout(() => Modal.show(<SuccessView />), 500);
-    // } else {
-    //   Modal.hide();
-    // }
     return (
       <Container>
         <Header
@@ -191,12 +269,13 @@ export class TransportBill extends React.Component<Props, State> {
           <AnimatedListView
             extraScrollHeight={measures.defaultUnit * 2}
             scrollEventThrottle={1}
-            contentContainerStyle={{ paddingTop: NAVBAR_HEIGHT }}
+            contentContainerStyle={styles.flatList}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
               { useNativeDriver: true }
             )}
             data={bills}
+            extractData={this.state}
             onMomentumScrollBegin={this.onMomentumScrollBegin}
             onMomentumScrollEnd={this.onMomentumScrollEnd}
             onScrollEndDrag={this.onScrollEndDrag}
@@ -243,5 +322,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     paddingTop: measures.paddingSmall / 2
-  }
+  },
+  flatList: { paddingTop: NAVBAR_HEIGHT, paddingBottom: measures.paddingLong * 4 }
 });

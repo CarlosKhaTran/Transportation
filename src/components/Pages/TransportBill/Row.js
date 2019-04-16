@@ -10,20 +10,25 @@ import type { Bill } from './type';
 type Props = {
   item: Bill,
   index: number,
-  checked: boolean,
-  onCheck: Function
+  onCheck: Function,
+  onChangeBill: Function,
+  onChangeNotes: Function,
 }
 
 export default ({
   item,
   index,
-  checked,
-  onCheck
+  onCheck,
+  onChangeBill,
+  onChangeNotes,
 }: Props) => {
   const {
-    item_Code, item_Name, actual_Received, soBich, notes
+    item_Code, item_Name, actual_Received, soBich
   } = item;
   const [collapsible, setCollapsible] = useState(false);
+  const [check, setCheck] = useState(false);
+  const [notes, setNotes] = useState(item.notes || '');
+  const [actualReceived, setActualReceived] = useState(actual_Received.toString());
   const getColor = () => {
     switch (index % 3) {
       case 0:
@@ -34,15 +39,29 @@ export default ({
         return colors.darkGreen;
     }
   };
+  const onChangeValue = (value: string) => {
+    setActualReceived(value);
+    onChangeBill(value, item_Code);
+  };
+  const onChangeNotesValue = (value: string) => {
+    setNotes(value);
+    onChangeNotes(value, item_Code);
+  };
+  const onSetCheck = () => {
+    setCheck(!check);
+    onCheck(item_Code, !check);
+  };
   return (
     <View style={styles.billContainer}>
-      <TouchableOpacity style={styles.billHeader} onPress={() => setCollapsible(!collapsible)}>
-        <Icon name="shopping-bag" type="ent" color={getColor()} />
-        <Text style={styles.billName}>{`Sản phẩm: ${item_Name}`}</Text>
-        <TouchableOpacity onPress={() => onCheck(item_Code)} style={styles.checkbox}>
-          <Icon name={checked ? 'check-square-o' : 'square-o'} type="fa" color={getColor()} />
+      <View style={styles.billHeader}>
+        <TouchableOpacity style={styles.left} onPress={() => setCollapsible(!collapsible)}>
+          <Icon name="shopping-bag" type="ent" color={getColor()} />
+          <Text numberOfLines={1} style={styles.billName}>{`Sản phẩm: ${index + 1}. ${item_Name}`}</Text>
         </TouchableOpacity>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onSetCheck} style={styles.checkbox}>
+          <Icon name={check ? 'check-square-o' : 'square-o'} type="fa" color={getColor()} />
+        </TouchableOpacity>
+      </View>
       {collapsible && (
         <View style={styles.billContent}>
           <Input
@@ -71,10 +90,12 @@ export default ({
             appendIconColor={colors.softRed}
           />
           <Input
-            value={actual_Received.toString()}
-            name="actual_Received"
+            value={actualReceived}
+            name={item.item_Code}
             block
             containerStyle={styles.input}
+            onChangeValue={onChangeValue}
+            keyboardType="numeric"
             placeholderText="SL thực nhận"
             prependIconColor={colors.jaffa}
             prependIconName="ios-cube"
@@ -83,6 +104,7 @@ export default ({
             value={notes || ''}
             name="notes"
             block
+            onChangeValue={onChangeNotesValue}
             containerStyle={styles.input}
             placeholderText="Ghi chú"
             prependIconColor={colors.gray}
@@ -129,9 +151,15 @@ const styles = StyleSheet.create({
     ...commonStyles.text,
     color: colors.primaryColor,
     marginLeft: measures.marginMedium,
-    flex: 1
   },
   checkbox: {
     width: measures.defaultUnit * 4,
+  },
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    overflow: 'hidden',
+    marginRight: measures.marginSmall,
   }
 });

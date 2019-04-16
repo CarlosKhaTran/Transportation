@@ -13,29 +13,37 @@ type Props = {
   onCancel: Function,
 };
 type State = {
-  score: number
+  score: number,
+  note: string,
 };
 export default class RatingView extends React.PureComponent<Props, State> {
   state = {
-    score: 0
+    score: 0,
+    note: '',
   };
 
   selectScore = (score: number) => this.setState({
     score
   });
 
+  onChangeNote = (value: string) => {
+    this.setState({
+      note: value,
+    });
+  }
+
   render() {
-    const { score } = this.state;
+    const { score, note } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Icon name="feedback" type="md" color={colors.white} />
-          <Text style={styles.title}>ĐÁNH GIÁ DỊCH VỤ</Text>
+          <Text style={styles.title}>Gửi thông tin thành công</Text>
         </View>
         <View style={styles.content} />
-        <Text style={styles.objective}>Mức độ hài lòng:</Text>
+        <Text style={styles.objective}>Hãy đánh giá mức độ hài lòng:</Text>
         <View style={styles.starContainer}>
-          {_.range(0, 5).map(item => (item - 1 < score ? (
+          {_.range(1, 6).map(item => (item <= score ? (
             <TouchableOpacity key={item.toString()} onPress={() => this.selectScore(item)}>
               <Icon name="ios-star" size="small" color={colors.mango} />
             </TouchableOpacity>
@@ -46,11 +54,11 @@ export default class RatingView extends React.PureComponent<Props, State> {
           )))}
         </View>
         <Text style={styles.objective}>Đánh giá:</Text>
-        <TextInput style={styles.textInput} placeholder="Đánh giá chất lượng dịch vụ" />
+        <TextInput style={styles.textInput} value={note} onChangeText={this.onChangeNote} placeholder="Đánh giá chất lượng dịch vụ" />
         <View />
         <View style={styles.row}>
           <View style={commonStyles.fill}>
-            <Button block type="primary" title="Gửi" onPress={this.props.onSuccess} />
+            <Button block type="primary" title="Gửi" onPress={() => this.props.onSuccess(score, note)} />
           </View>
           <View style={commonStyles.fill}>
             <Button block type="secondary" title="Huỷ" onPress={this.props.onCancel} />
