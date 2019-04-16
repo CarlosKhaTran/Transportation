@@ -58,11 +58,15 @@ class Modal extends PureComponent<Props, State> {
     }
   }
 
-  hide() {
+  hide(cb: Function) {
     this.setState({
       show: false,
       formComponent: null,
       scale: new Animated.Value(0.7),
+    }, () => {
+      if (cb) {
+        cb();
+      }
     });
   }
 
@@ -134,9 +138,9 @@ const ModalPage = {
       instance.show(formComponent, touchOutSideToHide);
     }
   },
-  hide() {
+  hide(cb: Function) {
     if (instance) {
-      instance.hide();
+      instance.hide(cb);
     }
   },
 };

@@ -12,8 +12,8 @@ import { Modal } from '../../Global';
 import Row from './Row';
 import GeneralInfo from './GeneralInfo';
 import RatingView from './RatingView';
-import type { Bill } from './type';
 import SuccessView from './SuccessView';
+import type { Bill } from './type';
 
 type Props = {};
 type State = {
@@ -137,27 +137,22 @@ export class TransportBill extends React.Component<Props, State> {
   );
 
   onSubmit = () => {
-    this.setState(state => ({
-      ...state,
-      modalRating: true,
-      modalSuccess: false
-    }));
+    Modal.show(
+      <RatingView
+        onCancel={this.hideRatingModal}
+        onSuccess={this.hideRatingModalForSuccessModal}
+      />
+    );
   };
 
   hideRatingModal = () => {
-    this.setState(state => ({
-      ...state,
-      modalRating: false,
-      modalSuccess: false
-    }));
+    Modal.hide();
   };
 
   hideRatingModalForSuccessModal = () => {
-    this.setState(state => ({
-      ...state,
-      modalRating: false,
-      modalSuccess: true,
-    }));
+    Modal.hide(() => {
+      setTimeout(() => Modal.show(<SuccessView />), 500);
+    });
   }
 
   scrollEndTimer: any;
@@ -172,19 +167,19 @@ export class TransportBill extends React.Component<Props, State> {
       outputRange: [0, -NAVBAR_HEIGHT],
       extrapolate: 'clamp'
     });
-    if (this.state.modalRating) {
-      Modal.show(
-        <RatingView
-          onCancel={this.hideRatingModal}
-          onSuccess={this.hideRatingModalForSuccessModal}
-        />
-      );
-    } else if (!this.state.modalRating && this.state.modalSuccess) {
-      Modal.hide();
-      setTimeout(() => Modal.show(<SuccessView />), 500);
-    } else {
-      Modal.hide();
-    }
+    // if (this.state.modalRating) {
+    //   Modal.show(
+    //     <RatingView
+    //       onCancel={this.hideRatingModal}
+    //       onSuccess={this.hideRatingModalForSuccessModal}
+    //     />
+    //   );
+    // } else if (!this.state.modalRating && this.state.modalSuccess) {
+    //   Modal.hide();
+    //   setTimeout(() => Modal.show(<SuccessView />), 500);
+    // } else {
+    //   Modal.hide();
+    // }
     return (
       <Container>
         <Header

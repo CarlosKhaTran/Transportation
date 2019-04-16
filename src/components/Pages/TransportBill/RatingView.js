@@ -8,7 +8,10 @@ import {
 import { commonStyles, colors, measures } from '../../../assets';
 import { Icon, Button } from '../../Widgets';
 
-type Props = {};
+type Props = {
+  onSuccess: Function,
+  onCancel: Function,
+};
 type State = {
   score: number
 };
