@@ -197,16 +197,17 @@ export class TransportBill extends React.Component<Props, State> {
     } = bills[0];
     Modal.hide();
     Loading.show();
-    putInsertBillRating({
+    putInsertBillRating({ratingContent:{
       rowId,
       store_Code,
       delivery_Date,
       rating: score.toString(),
       ratingNotes: note,
-    }).then((res) => {
+    }}).then((res) => {
       if (res) {
         console.log(res);
         this.hideRatingModalForSuccessModal();
+
       }
       Loading.hide();
     }).catch((error) => {
@@ -243,8 +244,14 @@ export class TransportBill extends React.Component<Props, State> {
   };
 
   hideRatingModalForSuccessModal = () => {
-    Modal.hide(() => Modal.show(<SuccessView />));
+    Modal.hide(() => Modal.show(<SuccessView onBack={this.onBack}/>, false));
   };
+
+  onBack = () => {
+    Modal.hide()
+    const { navigation } = this.props;
+    navigation.goBack()
+  }
 
   scrollEndTimer: any;
 

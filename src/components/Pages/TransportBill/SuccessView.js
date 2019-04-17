@@ -5,14 +5,13 @@ import {
   View, StyleSheet, Text,
 } from 'react-native';
 import { commonStyles, colors, measures } from '../../../assets';
-import { Icon } from '../../Widgets';
+import { Icon, Button } from '../../Widgets';
 
 type Props = {};
 type State = {};
 export default class SuccessView extends React.PureComponent<Props, State> {
   state = {
   };
-
   render() {
     return (
       <View style={styles.container}>
@@ -23,6 +22,7 @@ export default class SuccessView extends React.PureComponent<Props, State> {
         <View style={styles.content}>
           <Icon name="ios-checkmark-circle-outline" size="large" color={colors.blue} />
           <Text style={styles.body}>Gửi Thành Công</Text>
+          <Button block type="primary" title="Quay Về" onPress={this.props.onBack} />
         </View>
       </View>
     );

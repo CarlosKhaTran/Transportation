@@ -30,6 +30,7 @@ export async function putInsertBill({ bill }: { bill: Array<Bill> }) {
 export async function putInsertBillRating({ ratingContent }: Object) {
   try {
     const url = urls.putInsertRatingUrl();
+    console.log(ratingContent)
     const response = await Axios.put(url, ratingContent);
     const { data } = response;
     return data.items;
