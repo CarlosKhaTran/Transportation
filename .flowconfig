@@ -27,6 +27,7 @@ node_modules/react-native/flow/
 
 [options]
 emoji=true
+; module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 
 esproposal.optional_chaining=enable
 esproposal.nullish_coalescing=enable
@@ -66,4 +67,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
 suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 
 [version]
-^0.96.0
+^0.92.0

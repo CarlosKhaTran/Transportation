@@ -12,7 +12,10 @@ module.exports = {
     'comma-dangle': 'off',
     'react/destructuring-assignment': 'off',
     'import/prefer-default-export': 'off',
-    "global-require": 0
+    "global-require": 0,
+    'no-console': 'off',
+    'import/no-cycle': 'off',
+    'camelcase': 'off',
   },
   'globals': {
     "fetch": false,
@@ -20,5 +23,12 @@ module.exports = {
     "React$Node": false,
     "isNaN": false,
     "FormData": false
-  }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["."]
+      }
+    },
+  },
 }

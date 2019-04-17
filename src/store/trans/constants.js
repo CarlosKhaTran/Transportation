@@ -1,0 +1,3 @@
+// @flow
+export const GET_LIST_BILLS = 'GET_LIST_BILLS';
+export const GET_LIST_BILLS_SUCCESS = 'GET_LIST_BILLS_SUCCESS';

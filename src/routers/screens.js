@@ -1,0 +1,8 @@
+// @flow
+export default {
+  LOADING: 'LOADING',
+  INTRO: 'INTRO',
+  LOG_IN: 'LOG_IN',
+  LOG_IN_BY_STOREID: 'LOG_IN_BY_STOREID',
+  TRANSPORT_BILL: 'TRANSPORT_BILL',
+};
