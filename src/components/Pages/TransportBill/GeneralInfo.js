@@ -1,23 +1,28 @@
 // @flow
 
 import React from 'react';
-import {
-  View, Text, StyleSheet, TouchableOpacity
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { measures, colors, commonStyles } from '../../../assets';
-import { Icon, Input } from '../../Widgets';
+import { Input } from '../../Widgets';
 
-export default () => (
+export default ({
+  total,
+  checked,
+  storeName
+}: {
+  total: number,
+  checked: number,
+  storeName: string
+}) => (
   <View style={styles.container}>
     <View style={styles.rowTitleContainer}>
-      <Icon name="ios-funnel" color={colors.gray} />
-      <Text style={styles.rowTitle}>Bộ lọc: </Text>
-      <TouchableOpacity style={styles.tag}>
-        <Text>Chưa xác nhận</Text>
-      </TouchableOpacity>
+      <Text style={styles.rowTitle}>
+        <Text style={{ ...commonStyles.text }}>Cửa hàng: </Text>
+        {storeName}
+      </Text>
       <Text style={styles.detail}>
-        {'Tổng cộng: '}
-        <Text style={{ color: colors.green }}>555</Text>
+        {'Xác Nhận: '}
+        <Text style={{ color: colors.red, fontWeight: '800' }}>{`${checked}/${total}`}</Text>
       </Text>
     </View>
     <Input
@@ -47,13 +52,13 @@ const styles = StyleSheet.create({
   rowTitle: {
     ...commonStyles.textBold,
     color: colors.black,
-    paddingHorizontal: measures.paddingSmall,
+    paddingHorizontal: measures.paddingSmall
   },
   detail: {
     ...commonStyles.text,
     color: colors.black,
     flex: 1,
-    textAlign: 'right',
+    textAlign: 'right'
   },
   rowTitleContainer: {
     paddingHorizontal: measures.paddingMedium,

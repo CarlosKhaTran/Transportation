@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Animated, View, StyleSheet, TouchableOpacity
 } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { Container, Header } from '../../Layout';
@@ -16,7 +17,9 @@ import SuccessView from './SuccessView';
 import { putInsertBill, putInsertBillRating } from '../../../service';
 import type { Bill } from './type';
 
-type Props = {};
+type Props = {
+  navigation: NavigationScreenProp<{}>
+};
 type State = {
   bills: Array<Bill>,
   scrollAnim: Animated.Value,
@@ -72,7 +75,7 @@ export class TransportBill extends React.Component<Props, State> {
     ),
     checkList: {},
     actualReceivedList: {},
-    notesList: {},
+    notesList: {}
   };
 
   clampedScrollValue = 0;
@@ -127,7 +130,7 @@ export class TransportBill extends React.Component<Props, State> {
       ...state,
       checkList: {
         ...state.checkList,
-        [itemCode]: check,
+        [itemCode]: check
       }
     }));
   };
@@ -152,7 +155,6 @@ export class TransportBill extends React.Component<Props, State> {
     }));
   };
 
-
   renderItem = ({ item, index }: { item: Bill, index: number }) => (
     <Row
       item={item}
@@ -173,60 +175,57 @@ export class TransportBill extends React.Component<Props, State> {
       return {
         ...item,
         actual_Received: actualReceived ? parseInt(actualReceived, 10) : item.actual_Received,
-        notes: notesList[item.item_Code] || null,
+        notes: notesList[item.item_Code] || null
       };
     });
     Loading.show();
-    putInsertBill({ bill: listBills }).then((res) => {
-      if (res) {
-        this.onRating();
-      }
-      Loading.hide();
-    }).catch((error) => {
-      console.log(error);
-      Loading.hide();
-    });
+    putInsertBill({ bill: listBills })
+      .then((res) => {
+        if (res) {
+          this.onRating();
+        }
+        Loading.hide();
+      })
+      .catch((error) => {
+        console.log(error);
+        Loading.hide();
+      });
   };
 
   sendRating = (score: number, note: string) => {
     const { bills } = this.state;
-    const {
-      rowId,
-      store_Code,
-      delivery_Date,
-    } = bills[0];
+    const { rowId, store_Code, delivery_Date } = bills[0];
     Modal.hide();
     Loading.show();
-    putInsertBillRating({ratingContent:{
-      rowId,
-      store_Code,
-      delivery_Date,
-      rating: score.toString(),
-      ratingNotes: note,
-    }}).then((res) => {
-      if (res) {
-        console.log(res);
-        this.hideRatingModalForSuccessModal();
-
+    putInsertBillRating({
+      ratingContent: {
+        rowId,
+        store_Code,
+        delivery_Date,
+        rating: score.toString(),
+        ratingNotes: note
       }
-      Loading.hide();
-    }).catch((error) => {
-      console.log(error);
-      Loading.hide();
-    });
-  }
+    })
+      .then((res) => {
+        if (res) {
+          console.log(res);
+          this.hideRatingModalForSuccessModal();
+        }
+        Loading.hide();
+      })
+      .catch((error) => {
+        console.log(error);
+        Loading.hide();
+      });
+  };
 
   onRating = () => {
-    Modal.show(<RatingView
-      onSuccess={this.sendRating}
-      onCancel={this.hideRatingModal}
-    />);
+    Modal.show(<RatingView onSuccess={this.sendRating} onCancel={this.hideRatingModal} />);
   };
 
   onSubmit = () => {
     const { checkList, bills } = this.state;
     const isMissing = bills.find(item => !checkList[item.item_Code]);
-    console.log(isMissing);
     Modal.show(
       <MessagePopup
         leftTitle="OK"
@@ -244,19 +243,19 @@ export class TransportBill extends React.Component<Props, State> {
   };
 
   hideRatingModalForSuccessModal = () => {
-    Modal.hide(() => Modal.show(<SuccessView onBack={this.onBack}/>, false));
+    Modal.hide(() => Modal.show(<SuccessView onBack={this.onBack} />, false));
   };
 
   onBack = () => {
-    Modal.hide()
+    Modal.hide();
     const { navigation } = this.props;
-    navigation.goBack()
-  }
+    navigation.goBack();
+  };
 
   scrollEndTimer: any;
 
   render() {
-    const { bills, clampedScroll } = this.state;
+    const { bills, clampedScroll, checkList } = this.state;
     const {
       storeName, staff, date, routeNum
     } = generalInfo;
@@ -265,6 +264,7 @@ export class TransportBill extends React.Component<Props, State> {
       outputRange: [0, -NAVBAR_HEIGHT],
       extrapolate: 'clamp'
     });
+    const numOfChecked = Object.keys(checkList).filter(key => checkList[key]).length;
     return (
       <Container>
         <Header
@@ -299,7 +299,14 @@ export class TransportBill extends React.Component<Props, State> {
               right: 0
             }}
           >
-            <GeneralInfo storeName={storeName} date={date} routeNum={routeNum} staff={staff} />
+            <GeneralInfo
+              storeName={storeName}
+              date={date}
+              routeNum={routeNum}
+              staff={staff}
+              total={bills.length}
+              checked={numOfChecked}
+            />
           </Animated.View>
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={this.onSubmit}>

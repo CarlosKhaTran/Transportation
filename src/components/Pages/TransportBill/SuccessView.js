@@ -1,17 +1,17 @@
 // @flow
 
 import React from 'react';
-import {
-  View, StyleSheet, Text,
-} from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { commonStyles, colors, measures } from '../../../assets';
 import { Icon, Button } from '../../Widgets';
 
-type Props = {};
+type Props = {
+  onBack: Function
+};
 type State = {};
 export default class SuccessView extends React.PureComponent<Props, State> {
-  state = {
-  };
+  state = {};
+
   render() {
     return (
       <View style={styles.container}>
