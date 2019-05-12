@@ -1,48 +1,34 @@
 // @flow
 import React from 'react';
 import {
-  Animated, View, StyleSheet, TouchableOpacity
+  View, StyleSheet, TouchableOpacity, Text, Alert
 } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { Container, Header } from '../../Layout';
+import { Container, Header, StoreInfo } from '../../Layout';
 import { colors, commonStyles, measures } from '../../../assets';
 import { Icon, MessagePopup } from '../../Widgets';
 import { Modal, Loading } from '../../Global';
 import Row from './Row';
-import GeneralInfo from './GeneralInfo';
-import RatingView from './RatingView';
 import SuccessView from './SuccessView';
-import { putInsertBill, putInsertBillRating } from '../../../service';
+import { putInsertBill } from '../../../service';
+import { actions } from '../../../store';
+import { SCREENS } from '../../../routers';
 import type { Bill } from './type';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>
+  navigation: NavigationScreenProp<{}>,
+  totalItem: number,
+  getListBill: () => void
 };
 type State = {
   bills: Array<Bill>,
-  scrollAnim: Animated.Value,
-  offsetAnim: Animated.Value,
-  clampedScroll: any,
-  modalRating: boolean,
   modalSuccess: boolean,
   checkList: { [string]: boolean },
   actualReceivedList: { [string]: string },
   notesList: { [string]: string }
 };
-
-const generalInfo = {
-  storeName: 'VM+HCM 520 quốc lộ 13',
-  date: '02/04/2019',
-  routeNum: '1',
-  staff: 'Nguyen van A'
-};
-
-const NAVBAR_HEIGHT = 120;
-const scrollAnim = new Animated.Value(0);
-const offsetAnim = new Animated.Value(0);
-const AnimatedListView = Animated.createAnimatedComponent(KeyboardAwareFlatList);
 
 export class TransportBill extends React.Component<Props, State> {
   static getDerivedStateFromProps(props: { bills: Array<Bill> }) {
@@ -57,22 +43,7 @@ export class TransportBill extends React.Component<Props, State> {
 
   state = {
     bills: [],
-    modalRating: false,
     modalSuccess: false,
-    scrollAnim,
-    offsetAnim,
-    clampedScroll: Animated.diffClamp(
-      Animated.add(
-        scrollAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolateLeft: 'clamp'
-        }),
-        offsetAnim
-      ),
-      0,
-      NAVBAR_HEIGHT
-    ),
     checkList: {},
     actualReceivedList: {},
     notesList: {}
@@ -85,45 +56,8 @@ export class TransportBill extends React.Component<Props, State> {
   scrollValue = 0;
 
   componentDidMount() {
-    this.state.scrollAnim.addListener(({ value }) => {
-      // This is the same calculations that diffClamp does.
-      const diff = value - this.scrollValue;
-      this.scrollValue = value;
-      this.clampedScrollValue = Math.min(
-        Math.max(this.clampedScrollValue + diff, 0),
-        NAVBAR_HEIGHT
-      );
-    });
-    this.state.offsetAnim.addListener(({ value }) => {
-      this.offsetValue = value;
-    });
+    this.props.getListBill();
   }
-
-  componentWillUnmount() {
-    // Don't forget to remove the listeners!
-    this.state.scrollAnim.removeAllListeners();
-    this.state.offsetAnim.removeAllListeners();
-  }
-
-  onMomentumScrollEnd = () => {
-    const toValue = this.scrollValue > NAVBAR_HEIGHT && this.clampedScrollValue > NAVBAR_HEIGHT / 2
-      ? this.offsetValue + NAVBAR_HEIGHT
-      : this.offsetValue - NAVBAR_HEIGHT;
-
-    Animated.timing(this.state.offsetAnim, {
-      toValue,
-      duration: 350,
-      useNativeDriver: true
-    }).start();
-  };
-
-  onScrollEndDrag = () => {
-    this.scrollEndTimer = setTimeout(this.onMomentumScrollEnd, 250);
-  };
-
-  onMomentumScrollBegin = () => {
-    clearTimeout(this.scrollEndTimer);
-  };
 
   onCheck = (itemCode: string, check: boolean) => {
     this.setState((state: State) => ({
@@ -143,6 +77,12 @@ export class TransportBill extends React.Component<Props, State> {
         [name]: value
       }
     }));
+  };
+
+  onReset = () => {
+    Modal.hide();
+    const { navigation } = this.props;
+    navigation.replace(SCREENS.LOG_IN_BY_STOREID);
   };
 
   onChangeNotes = (value: string, name: string) => {
@@ -178,54 +118,38 @@ export class TransportBill extends React.Component<Props, State> {
         notes: notesList[item.item_Code] || null
       };
     });
+    const wrongNode = listBills.find(item => item.actual_Received > item.soBich);
+    if (wrongNode) {
+      const indexof = listBills.indexOf(wrongNode);
+      Alert.alert(
+        'Thông tin không hợp lệ',
+        `Sản phâm ${indexof + 1}. ${
+          wrongNode.item_Name
+        } có số lượng thực nhận lớn hơn số lượng chuyển hàng. Vui lòng kiểm tra lại`
+      );
+      return;
+    }
     Loading.show();
     putInsertBill({ bill: listBills })
-      .then((res) => {
-        if (res) {
-          this.onRating();
-        }
+      .then(() => {
         Loading.hide();
+        Modal.show(<SuccessView onBack={this.onReset} />, false);
       })
       .catch((error) => {
         console.log(error);
         Loading.hide();
       });
-  };
-
-  sendRating = (score: number, note: string) => {
-    const { bills } = this.state;
-    const { rowId, store_Code, delivery_Date } = bills[0];
-    Modal.hide();
-    Loading.show();
-    putInsertBillRating({
-      ratingContent: {
-        rowId,
-        store_Code,
-        delivery_Date,
-        rating: score.toString(),
-        ratingNotes: note
-      }
-    })
-      .then((res) => {
-        if (res) {
-          console.log(res);
-          this.hideRatingModalForSuccessModal();
-        }
-        Loading.hide();
-      })
-      .catch((error) => {
-        console.log(error);
-        Loading.hide();
-      });
-  };
-
-  onRating = () => {
-    Modal.show(<RatingView onSuccess={this.sendRating} onCancel={this.hideRatingModal} />);
   };
 
   onSubmit = () => {
-    const { checkList, bills } = this.state;
-    const isMissing = bills.find(item => !checkList[item.item_Code]);
+    const { checkList } = this.state;
+    const { totalItem } = this.props;
+    const numOfChecked = Object.keys(checkList).filter(key => checkList[key]).length;
+    const isMissing = numOfChecked < totalItem;
+    if (isMissing) {
+      Alert.alert('Thông báo', 'Vui lòng xác nhận đầy đủ các đơn hàng!');
+      return;
+    }
     Modal.show(
       <MessagePopup
         leftTitle="OK"
@@ -238,76 +162,59 @@ export class TransportBill extends React.Component<Props, State> {
     );
   };
 
-  hideRatingModal = () => {
-    Modal.hide();
-  };
-
-  hideRatingModalForSuccessModal = () => {
-    Modal.hide(() => Modal.show(<SuccessView onBack={this.onBack} />, false));
-  };
-
   onBack = () => {
     Modal.hide();
     const { navigation } = this.props;
     navigation.goBack();
   };
 
-  scrollEndTimer: any;
+  onEndReached = () => {
+    const { bills } = this.state;
+    const { totalItem, getListBill } = this.props;
+    if (bills.length < totalItem) {
+      getListBill();
+    }
+  };
+
+  openDrawer = () => {
+    const { navigation } = this.props;
+    navigation.toggleDrawer();
+  };
 
   render() {
-    const { bills, clampedScroll, checkList } = this.state;
-    const {
-      storeName, staff, date, routeNum
-    } = generalInfo;
-    const navbarTranslate = clampedScroll.interpolate({
-      inputRange: [0, NAVBAR_HEIGHT],
-      outputRange: [0, -NAVBAR_HEIGHT],
-      extrapolate: 'clamp'
-    });
+    const { bills, checkList } = this.state;
+    const { totalItem } = this.props;
     const numOfChecked = Object.keys(checkList).filter(key => checkList[key]).length;
     return (
       <Container>
         <Header
           title="ĐƠN HÀNG VẬN CHUYỂN"
-          rightIcon={<Icon name="list" type="ent" color={colors.white} />}
+          leftIcon={<Icon name="ios-menu" color={colors.white} />}
+          handleLeftButton={this.openDrawer}
+          rightIcon={(
+            <Text
+              style={[
+                styles.confirmText,
+                { color: numOfChecked === totalItem ? colors.green : colors.red }
+              ]}
+            >
+              {`${numOfChecked}/${totalItem}`}
+            </Text>
+)}
           handleRightButton={() => {}}
         />
         <View style={commonStyles.fill}>
-          <AnimatedListView
+          <StoreInfo />
+          {/* $FlowFixMe */}
+          <KeyboardAwareFlatList
             extraScrollHeight={measures.defaultUnit * 2}
-            scrollEventThrottle={1}
             contentContainerStyle={styles.flatList}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
-              { useNativeDriver: true }
-            )}
             data={bills}
             extractData={this.state}
-            onMomentumScrollBegin={this.onMomentumScrollBegin}
-            onMomentumScrollEnd={this.onMomentumScrollEnd}
-            onScrollEndDrag={this.onScrollEndDrag}
             renderItem={this.renderItem}
             keyExtractor={(item: Bill, index: number) => item.item_Code + index}
+            onEndReached={this.onEndReached}
           />
-          <Animated.View
-            style={{
-              transform: [{ translateY: navbarTranslate }],
-              height: NAVBAR_HEIGHT,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0
-            }}
-          >
-            <GeneralInfo
-              storeName={storeName}
-              date={date}
-              routeNum={routeNum}
-              staff={staff}
-              total={bills.length}
-              checked={numOfChecked}
-            />
-          </Animated.View>
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={this.onSubmit}>
           <Icon name="ios-send" color={colors.white} />
@@ -317,11 +224,19 @@ export class TransportBill extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
-  bills: state.transStore.bills
+const mapDispatchToProps = (dispatch: Function) => ({
+  getListBill: () => dispatch(actions.getListBill())
 });
 
-export default connect(mapStateToProps)(TransportBill);
+const mapStateToProps = state => ({
+  bills: state.transStore.bills,
+  totalItem: state.transStore.totalItem
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TransportBill);
 
 const styles = StyleSheet.create({
   sendButton: {
@@ -337,5 +252,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     paddingTop: measures.paddingSmall / 2
   },
-  flatList: { paddingTop: NAVBAR_HEIGHT, paddingBottom: measures.paddingLong * 4 }
+  flatList: { paddingTop: measures.paddingMedium, paddingBottom: measures.paddingLong * 4 },
+  confirmText: {
+    ...commonStyles.textBold
+  }
 });

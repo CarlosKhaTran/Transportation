@@ -1,24 +1,22 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  TouchableOpacity, StyleSheet, Text
-} from 'react-native';
+import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from './Icon';
 import { colors, commonStyles, measures } from '../../assets';
 
 type Props = {
-  type?: 'primary' | 'secondary' | "text",
+  type?: 'primary' | 'secondary' | 'text',
   color?: ?String,
   title?: string,
   style?: ?Object,
   titleStyle?: ?Object,
   top?: ?number,
   bottom?: ?number,
-  onPress?: () => void,
+  onPress?: () => any,
   block?: ?boolean,
   height?: number,
-  iconName?: string,
+  iconName?: string
 };
 export default class Button extends Component<Props> {
   static defaultProps: Props = {
@@ -27,7 +25,7 @@ export default class Button extends Component<Props> {
     top: measures.marginMedium,
     block: false,
     height: 48,
-    onPress: () => { },
+    onPress: () => {},
     iconName: '',
     titleStyle: undefined,
     style: undefined,
@@ -48,13 +46,13 @@ export default class Button extends Component<Props> {
           marginBottom: bottom,
           ...commonStyles.shadow,
           marginHorizontal: measures.marginSmall,
-          width: !block ? measures.buttonWidth : null,
+          width: !block ? measures.buttonWidth : null
         };
       case 'text':
         return {
           alignSelf: 'center',
           marginTop: top,
-          marginBottom: bottom,
+          marginBottom: bottom
         };
       default:
         return {
@@ -64,10 +62,10 @@ export default class Button extends Component<Props> {
           height,
           marginBottom: bottom,
           marginHorizontal: measures.marginSmall,
-          width: !block ? measures.buttonWidth : null,
+          width: !block ? measures.buttonWidth : null
         };
     }
-  }
+  };
 
   titleStyle = (): Object => {
     const { type, color } = this.props;
@@ -76,22 +74,22 @@ export default class Button extends Component<Props> {
         return {
           ...styles.title,
           color: colors.primaryColor,
-          fontSize: measures.fontSizeMedium,
+          fontSize: measures.fontSizeMedium
         };
       case 'text':
         return {
           ...commonStyles.text,
           color: color || colors.black,
-          fontWeight: '400',
+          fontWeight: '400'
         };
       default:
         return {
           ...styles.title,
           color: colors.white,
-          fontSize: measures.fontSizeMedium,
+          fontSize: measures.fontSizeMedium
         };
     }
-  }
+  };
 
   renderLinearbackground = () => {
     const { type } = this.props;
@@ -108,7 +106,7 @@ export default class Button extends Component<Props> {
       case 'secondary':
         return (
           <LinearGradient
-            colors={[colors.white, colors.lightGray]}
+            colors={[colors.lightGray, colors.smoke]}
             style={styles.gradient}
             end={{ x: 0, y: 0 }}
             start={{ x: 1, y: 0 }}
@@ -117,19 +115,22 @@ export default class Button extends Component<Props> {
       default:
         return null;
     }
-  }
+  };
 
   render() {
     const {
-      style, title, titleStyle, onPress, iconName,
+      style, title, titleStyle, onPress, iconName
     } = this.props;
     return (
-      <TouchableOpacity
-        onPress={onPress}
-        style={[this.containerStyle(), style]}
-      >
+      <TouchableOpacity onPress={onPress} style={[this.containerStyle(), style]}>
         {this.renderLinearbackground()}
-        {iconName !== '' && <Icon name={iconName} style={{ position: 'absolute', left: measures.marginMedium, top: measures.defaultUnit }} color={colors.black} />}
+        {iconName !== '' && (
+          <Icon
+            name={iconName}
+            style={{ position: 'absolute', left: measures.marginMedium, top: measures.defaultUnit }}
+            color={colors.black}
+          />
+        )}
         <Text style={[this.titleStyle(), titleStyle]}>{title}</Text>
       </TouchableOpacity>
     );
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: measures.borderRadius,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   gradient: {
     height: '100%',
@@ -148,10 +149,10 @@ const styles = StyleSheet.create({
     top: 0,
     width: '100%',
     zIndex: 0,
-    borderRadius: measures.borderRadius,
+    borderRadius: measures.borderRadius
   },
   title: {
     ...commonStyles.textBold,
-    fontSize: measures.fontSizeMedium,
-  },
+    fontSize: measures.fontSizeMedium
+  }
 });

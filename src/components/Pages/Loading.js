@@ -8,35 +8,30 @@ import { colors } from '../../assets';
 import { SCREENS } from '../../routers';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>,
+  navigation: NavigationScreenProp<{}>
   // isReady: boolean,
 };
-type State = {
-};
+type State = {};
 
 export default class Loading extends Component<Props, State> {
-  state = {
-  }
+  state = {};
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
-  onLoadDone = () => {
-
-  };
+  onLoadDone = () => {};
 
   componentDidMount = () => {
     setTimeout(() => {
       this.navigate(SCREENS.LOG_IN_BY_STOREID);
     }, 2000);
-  }
+  };
 
   navigate = (screenName: string, params: Object = {}) => {
     const { navigation } = this.props;
     navigation.navigate({
       routeName: screenName,
       key: screenName,
-      params,
+      params
     });
   };
 
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.loadingBackground,
+    backgroundColor: colors.loadingBackground
   },
   image: {
     position: 'absolute',
@@ -68,12 +63,12 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 0
   },
   logo: {
     resizeMode: 'contain',
     width: 300,
-    height: 80,
+    height: 80
   },
   loading: {
     transform: [{ scale: 0.5 }]

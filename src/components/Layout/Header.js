@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
   Animated,
-  Keyboard,
+  Keyboard
 } from 'react-native';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { SafeAreaView } from 'react-navigation';
@@ -21,17 +21,17 @@ type Props = {
   handleSecretAction?: ?Function,
   title?: ?string,
   leftIcon?: ?React$Node,
-  rightIcon?: ?React$Node,
+  rightIcon?: any,
   containSearchBar?: boolean,
   onfocusSearch?: ?Function,
   onBlurSearch?: ?Function,
   onChangeSearchText?: Function,
   isTransparent?: boolean,
-  anim?: boolean,
+  anim?: boolean
 };
 type State = {
   keyboardOpen: boolean,
-  buttonAnimation: Animated.Value,
+  buttonAnimation: Animated.Value
 };
 
 export default class Header extends Component<Props, State> {
@@ -47,12 +47,12 @@ export default class Header extends Component<Props, State> {
     isTransparent: false,
     onChangeSearchText: () => {},
     onfocusSearch: () => {},
-    onBlurSearch: () => {},
-  }
+    onBlurSearch: () => {}
+  };
 
   state = {
     keyboardOpen: false,
-    buttonAnimation: new Animated.Value(0),
+    buttonAnimation: new Animated.Value(0)
   };
 
   componentDidMount() {
@@ -75,7 +75,7 @@ export default class Header extends Component<Props, State> {
     const { onfocusSearch, onChangeSearchText, onBlurSearch } = this.props;
     Animated.timing(buttonAnimation, {
       toValue: keyboardOpen ? measures.defaultUnit * 7 : 0,
-      duration: 300,
+      duration: 300
     }).start();
     return (
       <View style={styles.searchBarContainer}>
@@ -123,11 +123,13 @@ export default class Header extends Component<Props, State> {
       rightIcon,
       isTransparent,
       handleSecretAction,
-      anim,
+      anim
     } = this.props;
     const titleText = (
       <View style={styles.middle}>
-        <Text style={styles.title} onPress={handleSecretAction}>{title}</Text>
+        <Text style={styles.title} onPress={handleSecretAction}>
+          {title}
+        </Text>
       </View>
     );
     return (
@@ -135,13 +137,15 @@ export default class Header extends Component<Props, State> {
         style={[
           styles.container,
           containSearchBar && {
-            height: measures.defaultUnit * 17,
-          },
+            height: measures.defaultUnit * 17
+          }
         ]}
       >
         <SafeAreaView />
         <LinearGradient
-          colors={!isTransparent ? [colors.lightPrimaryColor, colors.primaryColor] : ['#fff', '#fff']}
+          colors={
+            !isTransparent ? [colors.lightPrimaryColor, colors.primaryColor] : ['#fff', '#fff']
+          }
           style={styles.gradient}
           end={{ x: 0, y: 0 }}
           start={{ x: 1, y: 0 }}
@@ -156,20 +160,16 @@ export default class Header extends Component<Props, State> {
                     size={30}
                     color={isTransparent ? colors.gray : 'white'}
                   />
-                ) : leftIcon}
+                ) : (
+                  leftIcon
+                )}
               </TouchableOpacity>
             )}
           </View>
-          {anim ? (
-            <Transition appear="top">
-              {titleText}
-            </Transition>
-          ) : titleText}
+          {anim ? <Transition appear="top">{titleText}</Transition> : titleText}
           <View style={styles.right}>
             {handleRightButton && (
-              <TouchableOpacity onPress={handleRightButton}>
-                {rightIcon}
-              </TouchableOpacity>
+              <TouchableOpacity onPress={handleRightButton}>{rightIcon}</TouchableOpacity>
             )}
           </View>
         </View>
@@ -184,12 +184,12 @@ const styles = StyleSheet.create({
     height: measures.defaultUnit * 10,
     backgroundColor: colors.primaryColor,
     zIndex: 21,
-    ...commonStyles.shadow,
+    ...commonStyles.shadow
   },
   searchBarContainer: {
     flex: 1,
     padding: measures.paddingSmall,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   searchTextInput: {
     backgroundColor: colors.white,
@@ -198,55 +198,55 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     paddingHorizontal: measures.paddingSmall,
-    marginLeft: measures.marginSmall,
+    marginLeft: measures.marginSmall
   },
   textInput: {
     flex: 1,
-    marginLeft: measures.marginSmall,
+    marginLeft: measures.marginSmall
   },
   content: {
     flex: 1,
     // paddingTop: measures.paddingSmall + 4,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   left: {
     width: measures.defaultUnit * 6,
     justifyContent: 'center',
-    paddingLeft: measures.paddingMedium,
+    paddingLeft: measures.paddingMedium
   },
   right: {
     width: measures.defaultUnit * 6,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   middle: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   gradient: {
     height: '100%',
     position: 'absolute',
     top: 0,
     width: '100%',
-    zIndex: 0,
+    zIndex: 0
   },
   title: {
     ...commonStyles.text,
     fontSize: measures.fontSizeLarge + 4,
     fontWeight: '600',
-    color: colors.white,
+    color: colors.white
   },
   cancelText: {
     ...commonStyles.text,
     fontSize: measures.fontSizeMedium,
     color: colors.white,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   cancelbutton: {
     height: measures.defaultUnit * 5,
-    paddingLeft: measures.paddingSmall,
-  },
+    paddingLeft: measures.paddingSmall
+  }
 });

@@ -3,39 +3,27 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { measures, colors, commonStyles } from '../../../assets';
-import { Input } from '../../Widgets';
 
 export default ({
   total,
   checked,
-  storeName
+  // storeName
 }: {
   total: number,
   checked: number,
-  storeName: string
+  // storeName: string
 }) => (
   <View style={styles.container}>
     <View style={styles.rowTitleContainer}>
-      <Text style={styles.rowTitle}>
+      {/* <Text style={styles.rowTitle}>
         <Text style={{ ...commonStyles.text }}>Cửa hàng: </Text>
         {storeName}
-      </Text>
+      </Text> */}
       <Text style={styles.detail}>
         {'Xác Nhận: '}
         <Text style={{ color: colors.red, fontWeight: '800' }}>{`${checked}/${total}`}</Text>
       </Text>
     </View>
-    <Input
-      value=""
-      name="searchValue"
-      block
-      containerStyle={styles.input}
-      placeholderText="SL thực nhận"
-      prependIconColor={colors.gray}
-      prependIconName="ios-search"
-      appendIcon="ios-close-circle"
-      appendIconColor={colors.gray}
-    />
   </View>
 );
 

@@ -2,23 +2,26 @@ import { colors, measures } from '.';
 
 export default {
   text: {
-    fontFamily: 'Roboto-Light',
+    fontFamily: 'Roboto-Light'
   },
   textSemiBold: {
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-Medium'
   },
   textLight: {
-    fontFamily: 'Roboto-Thin',
+    fontFamily: 'Roboto-Thin'
   },
   textBold: {
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-Medium'
   },
   center: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   fill: {
-    flex: 1,
+    flex: 1
+  },
+  row: {
+    flexDirection: 'row'
   },
   shadow: {
     shadowOpacity: 0.3,
@@ -27,7 +30,7 @@ export default {
     shadowColor: colors.gray,
     shadowOffset: {
       width: 1,
-      height: 1,
-    },
-  },
+      height: 1
+    }
+  }
 };

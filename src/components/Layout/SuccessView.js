@@ -2,26 +2,34 @@
 
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { commonStyles, colors, measures } from '../../../assets';
-import { Icon, Button } from '../../Widgets';
+import { commonStyles, colors, measures } from '../../assets';
+import { Icon, Button } from '../Widgets';
 
 type Props = {
-  onBack: Function
+  onBack: Function,
+  title?: string,
+  message?: string
 };
 type State = {};
 export default class SuccessView extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    title: 'CHÚC MỪNG',
+    message: 'GỬI THÔNG TIN THÀNH CÔNG!'
+  };
+
   state = {};
 
   render() {
+    const { title, message } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Icon name="feedback" type="md" color={colors.white} />
-          <Text style={styles.title}>ĐÁNH GIÁ DỊCH VỤ</Text>
+          <Text style={styles.title}>{title}</Text>
         </View>
         <View style={styles.content}>
           <Icon name="ios-checkmark-circle-outline" size="large" color={colors.blue} />
-          <Text style={styles.body}>Gửi Thành Công</Text>
+          <Text style={styles.body}>{message}</Text>
         </View>
         <View>
           <Button block type="primary" title="Quay Về" onPress={this.props.onBack} />

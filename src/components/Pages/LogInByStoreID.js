@@ -2,7 +2,7 @@
 import React from 'react';
 import _ from 'lodash';
 import {
-  Image, StyleSheet, View, Text
+  Image, StyleSheet, View, Text, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Transition } from 'react-navigation-fluid-transitions';
@@ -15,23 +15,23 @@ import { actions } from '../../store';
 
 type Props = {
   navigation: NavigationScreenProp<{}>,
-  getListBill: (storeID: string, cb: (isSucess: boolean) => void) => void
+  geStoreInfo: (storeID: string, cb: (isSucess: boolean) => void) => void
 };
 type State = {
   storeID: string,
-  storeIDError: boolean,
+  storeIDError: boolean
 };
 
 export class LogInByStoreID extends React.Component<Props, State> {
   state = {
     storeID: '',
-    storeIDError: false,
+    storeIDError: false
   };
 
   onChangeValue = (value: string, name: string) => {
     this.setState({
       [name]: value,
-      storeIDError: false,
+      storeIDError: false
     });
   };
 
@@ -39,26 +39,27 @@ export class LogInByStoreID extends React.Component<Props, State> {
     const { navigation } = this.props;
     if (isSucess) {
       navigation.navigate({
-        routeName: SCREENS.TRANSPORT_BILL,
-        key: SCREENS.TRANSPORT_BILL
+        routeName: SCREENS.COMFIRM_STORE_STATE,
+        key: SCREENS.COMFIRM_STORE_STATE
       });
     } else {
+      Alert.alert('Lỗi!', 'Không tìm thấy thông tin cửa hàng. Vui lòng kiểm tra lại!');
       this.setState({
-        storeIDError: true,
+        storeIDError: true
       });
     }
-  }
+  };
 
   onLogin = () => {
-    const { getListBill } = this.props;
+    const { geStoreInfo } = this.props;
     const { storeID } = this.state;
     if (_.isEmpty(storeID)) {
       this.setState({
-        storeIDError: true,
+        storeIDError: true
       });
       return;
     }
-    getListBill(storeID, this.callBack);
+    geStoreInfo(storeID, this.callBack);
   };
 
   render() {
@@ -95,9 +96,9 @@ export class LogInByStoreID extends React.Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  getListBill: (storeID: string, cb: (isSucess: boolean) => void) => dispatch(
-    actions.getListBill(storeID, cb)
-  )
+  geStoreInfo: (storeID: string, cb: (isSucess: boolean) => void) => {
+    dispatch(actions.geStoreInfo(storeID, cb));
+  }
 });
 
 export default connect(

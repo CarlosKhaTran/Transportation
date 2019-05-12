@@ -12,6 +12,7 @@ type Props = {
   inputStyle?: ?Object,
   name: string,
   error?: boolean,
+  type?: 'input' | 'select',
   value: string,
   onChangeValue?: (value: string, name: string) => void,
   top?: ?number,
@@ -28,6 +29,7 @@ type Props = {
   keyboardType?: 'default' | 'numeric',
   prependIconType?: string,
   appendIconColor?: string,
+  openPicker?: Function
 };
 
 type State = {
@@ -41,9 +43,10 @@ type State = {
 export default class Input extends Component<Props, State> {
   static defaultProps = {
     top: 0,
-    onChangeValue: () => { },
+    onChangeValue: () => {},
     bottom: measures.marginLong,
     block: false,
+    type: 'input',
     value: '',
     error: false,
     inputStyle: undefined,
@@ -57,19 +60,23 @@ export default class Input extends Component<Props, State> {
     editable: true,
     prependIconType: undefined,
     prependIconColor: colors.blue,
+    openPicker: () => {}
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State): any {
     if (
       // eslint-disable-next-line no-underscore-dangle
-      !prevState.onActive && nextProps.value !== '' && prevState.transitionAnimValue._value !== 1
+      !prevState.onActive
+      && nextProps.value !== ''
+      // eslint-disable-next-line no-underscore-dangle
+      && prevState.transitionAnimValue._value !== 1
     ) {
       return {
-        injectValue: true,
+        injectValue: true
       };
     }
     return {
-      injectValue: false,
+      injectValue: false
     };
   }
 
@@ -78,7 +85,7 @@ export default class Input extends Component<Props, State> {
     transitionAnimValue: new Animated.Value(0),
     onActive: false,
     injectValue: false,
-    _value: 0,
+    _value: 0
   };
 
   componentDidMount() {
@@ -102,52 +109,53 @@ export default class Input extends Component<Props, State> {
     Animated.timing(this.state.transitionAnimValue, {
       toValue: 1,
       duration: 100,
-      useNativeDriver: true,
+      useNativeDriver: true
     }).start(() => {
       if (_.isEmpty(this.props.value)) {
         this.setState({
           onActive: true,
-          _value: 1,
+          _value: 1
         });
       }
       this.setState({
-        _value: 1,
+        _value: 1
       });
     });
   };
 
   onBlur = () => {
     const { value } = this.props;
-    this.setState({
-      onActive: false,
-      _value: _.isEmpty(value) ? 0 : 1,
-    }, () => {
-      if (_.isEmpty(value)) {
-        Animated.timing(this.state.transitionAnimValue, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: true,
-        }).start();
+    this.setState(
+      {
+        onActive: false,
+        _value: _.isEmpty(value) ? 0 : 1
+      },
+      () => {
+        if (_.isEmpty(value)) {
+          Animated.timing(this.state.transitionAnimValue, {
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: true
+          }).start();
+        }
       }
-    });
+    );
   };
 
   containerStyle = (): Object => {
-    const {
-      top, bottom, block
-    } = this.props;
+    const { top, bottom, block } = this.props;
     return {
       marginTop: top,
       marginBottom: bottom,
       marginHorizontal: measures.marginSmall,
       width: !block ? measures.buttonWidth : null,
-      alignSelf: !block ? 'center' : null,
+      alignSelf: !block ? 'center' : null
     };
-  }
+  };
 
   toggleEyeButton = () => {
     this.setState(prevState => ({
-      showPassword: !prevState.showPassword,
+      showPassword: !prevState.showPassword
     }));
   };
 
@@ -161,7 +169,7 @@ export default class Input extends Component<Props, State> {
       return colors.lightPrimaryColor;
     }
     return colors.smoke;
-  }
+  };
 
   render() {
     const {
@@ -180,13 +188,13 @@ export default class Input extends Component<Props, State> {
       value,
       appendIcon,
       keyboardType,
+      openPicker,
+      type
     } = this.props;
-    const {
-      showPassword, transitionAnimValue, _value
-    } = this.state;
+    const { showPassword, transitionAnimValue, _value } = this.state;
     const translateY = transitionAnimValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, -24],
+      outputRange: [0, -24]
     });
     return (
       <Animated.View
@@ -194,7 +202,7 @@ export default class Input extends Component<Props, State> {
           styles.container,
           this.containerStyle,
           containerStyle,
-          { borderColor: this.getColor() },
+          { borderColor: this.getColor() }
         ]}
       >
         <Animated.Text
@@ -207,38 +215,71 @@ export default class Input extends Component<Props, State> {
             backgroundColor: _value === 0 ? colors.transparent : colors.white,
             transform: [
               {
-                translateY,
-              },
+                translateY
+              }
             ],
             fontSize: measures.fontSizeMedium,
-            color: this.getColor(),
+            color: this.getColor()
           }}
         >
           {placeholderText}
         </Animated.Text>
         <View style={styles.prependContainer}>
-          <Icon name={prependIconName} type={prependIconType} size="small" color={prependIconColor} />
+          <Icon
+            name={prependIconName}
+            type={prependIconType}
+            size="small"
+            color={prependIconColor}
+          />
         </View>
-        <TextInput
-          onFocus={this.onFocus}
-          value={value}
-          keyboardType={keyboardType}
-          onChangeText={(str: string) => {
-            if (onChangeValue) onChangeValue(str, name);
-          }}
-          editable={editable}
-          onBlur={this.onBlur}
-          style={[styles.input, inputStyle]}
-          placeholderTextColor={colors.gray}
-          secureTextEntry={passwordInput && !showPassword}
-        />
+        {type === 'input' ? (
+          <TextInput
+            onFocus={this.onFocus}
+            value={value}
+            keyboardType={keyboardType}
+            onChangeText={(str: string) => {
+              if (onChangeValue) onChangeValue(str, name);
+            }}
+            editable={editable}
+            onBlur={this.onBlur}
+            style={[styles.input, inputStyle]}
+            placeholderTextColor={colors.gray}
+            secureTextEntry={passwordInput && !showPassword}
+          />
+        ) : (
+          [
+            <TextInput
+              key="1"
+              onFocus={this.onFocus}
+              value={value}
+              editable={false}
+              keyboardType={keyboardType}
+              onChangeText={(str: string) => {
+                if (onChangeValue) onChangeValue(str, name);
+              }}
+              onBlur={this.onBlur}
+              style={[styles.input, inputStyle]}
+              placeholderTextColor={colors.gray}
+              secureTextEntry={passwordInput && !showPassword}
+            />,
+            <TouchableOpacity
+              key="2"
+              style={{
+                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0
+              }}
+              onPress={() => {
+                if (openPicker) openPicker();
+              }}
+            />
+          ]
+        )}
         {!_.isEmpty(appendText) && (
           <Text
             style={{
               ...commonStyles.text,
               color: colors.gray,
               alignSelf: 'center',
-              right: measures.marginSmall,
+              right: measures.marginSmall
             }}
           >
             {appendText}
@@ -265,12 +306,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: measures.borderRadius,
     borderWidth: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.white
   },
   input: {
     ...commonStyles.text,
     flex: 1,
-    color: colors.black,
+    color: colors.black
   },
   errorText: {
     ...commonStyles.text,
@@ -279,17 +320,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: -measures.fontSizeSmall,
     fontSize: measures.fontSizeSmall,
-    textAlign: 'right',
+    textAlign: 'right'
   },
   eyeButton: {
     width: measures.defaultUnit * 6,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   prependContainer: {
     width: measures.defaultUnit * 4 + 3,
     justifyContent: 'center',
     paddingLeft: measures.paddingSmall,
-    marginRight: measures.marginSmall,
+    marginRight: measures.marginSmall
   }
 });

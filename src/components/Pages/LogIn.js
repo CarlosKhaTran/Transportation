@@ -3,43 +3,76 @@ import React from 'react';
 import {
   Image, StyleSheet, View, Text
 } from 'react-native';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import { Transition } from 'react-navigation-fluid-transitions';
 import { NavigationScreenProp } from 'react-navigation';
 import { Container } from '../Layout';
 import { measures, colors, commonStyles } from '../../assets';
 import { Input, Button } from '../Widgets';
 import { SCREENS } from '../../routers';
+import { actions } from '../../store';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>
+  navigation: NavigationScreenProp<{}>,
+  requestLogin: (username: string, password: string, cb: (isSucess: boolean) => void) => void
 };
 type State = {
   username: string,
-  password: string
+  password: string,
+  passwordError: boolean,
+  usernameError: boolean
 };
 
-export default class LogIn extends React.Component<Props, State> {
+export class LogIn extends React.Component<Props, State> {
   state = {
     username: '',
-    password: ''
+    password: '',
+    usernameError: false,
+    passwordError: false
   };
 
   onChangeValue = (value: string, name: string) => {
     this.setState({
-      [name]: value
+      [name]: value,
+      [`${name}Error`]: false
     });
   };
 
   onLogin = () => {
+    const { requestLogin } = this.props;
+    const { username, password } = this.state;
+    if (_.isEmpty(username)) {
+      this.setState({
+        usernameError: true
+      });
+      return;
+    }
+    if (_.isEmpty(password)) {
+      this.setState({
+        passwordError: true
+      });
+      return;
+    }
+    requestLogin(username, password, this.callback);
+  };
+
+  callback = (isSuccess: boolean) => {
     const { navigation } = this.props;
-    navigation.navigate({
-      routeName: SCREENS.TRANSPORT_BILL,
-      key: SCREENS.TRANSPORT_BILL
+    if (isSuccess) {
+      navigation.navigate({ routeName: SCREENS.TRANSPORT_BILL, key: SCREENS.TRANSPORT_BILL });
+      return;
+    }
+    this.setState({
+      usernameError: true,
+      passwordError: true,
     });
   };
 
   render() {
-    const { username, password } = this.state;
+    const {
+      username, password, usernameError, passwordError
+    } = this.state;
     return (
       <Container haveKeyboard>
         <Transition shared="logo">
@@ -52,6 +85,7 @@ export default class LogIn extends React.Component<Props, State> {
             </View>
             <Input
               name="username"
+              error={usernameError}
               placeholderText="Tên Đăng Nhập"
               block
               autoCapitalize="none"
@@ -63,8 +97,10 @@ export default class LogIn extends React.Component<Props, State> {
             />
             <Input
               name="password"
+              error={passwordError}
               placeholderText="Mật khẩu"
               block
+              prependIconColor={colors.rose}
               prependIconName="ios-key"
               autoCapitalize="none"
               passwordInput
@@ -80,6 +116,21 @@ export default class LogIn extends React.Component<Props, State> {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch: Function) => ({
+  requestLogin: (username: string, password: string, cb: (isSucess: boolean) => void) => dispatch(
+    actions.requestLogin({
+      username,
+      password,
+      cb
+    })
+  )
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LogIn);
 
 const styles = StyleSheet.create({
   logo: {
@@ -107,7 +158,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: measures.fontSizeHuge - 10,
     color: colors.black,
-    ...commonStyles.textBold,
+    ...commonStyles.textBold
   },
   content: {
     flex: 1,

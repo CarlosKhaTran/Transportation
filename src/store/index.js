@@ -4,9 +4,11 @@ import {
   createStore, applyMiddleware, compose, combineReducers
 } from 'redux';
 import AsyncStorage from '@react-native-community/async-storage';
-import { authStore, transStore } from './reducer';
+import { authStore, transStore, commonStore } from './reducer';
 import createSaga from './saga';
 import * as transActions from './trans/actions';
+import * as authActions from './auth/actions';
+import * as commonActions from './common/actions';
 
 const config = {
   key: 'root',
@@ -18,7 +20,8 @@ const createReducers = () => persistReducer(
   config,
   combineReducers({
     authStore,
-    transStore
+    transStore,
+    commonStore
   })
 );
 
@@ -55,4 +58,6 @@ const buildStore = (reducers, initialState) => {
 export default buildStore();
 export const actions = {
   ...transActions,
+  ...authActions,
+  ...commonActions
 };

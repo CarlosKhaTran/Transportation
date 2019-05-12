@@ -12,18 +12,14 @@ type Props = {
   index: number,
   onCheck: Function,
   onChangeBill: Function,
-  onChangeNotes: Function,
-}
+  onChangeNotes: Function
+};
 
 export default ({
-  item,
-  index,
-  onCheck,
-  onChangeBill,
-  onChangeNotes,
+  item, index, onCheck, onChangeBill, onChangeNotes
 }: Props) => {
   const {
-    item_Code, item_Name, actual_Received, soBich
+    item_Code, item_Name, actual_Received, soBich, div_Unit
   } = item;
   const [collapsible, setCollapsible] = useState(false);
   const [check, setCheck] = useState(false);
@@ -40,11 +36,15 @@ export default ({
     }
   };
   const onChangeValue = (value: string) => {
+    setNotes(value);
+    setCheck(false);
     setActualReceived(value);
     onChangeBill(value, item_Code);
   };
   const onChangeNotesValue = (value: string) => {
     setNotes(value);
+    setCheck(false);
+    onCheck(item_Code, false);
     onChangeNotes(value, item_Code);
   };
   const onSetCheck = () => {
@@ -56,7 +56,10 @@ export default ({
       <View style={styles.billHeader}>
         <TouchableOpacity style={styles.left} onPress={() => setCollapsible(!collapsible)}>
           <Icon name="shopping-bag" type="ent" color={getColor()} />
-          <Text numberOfLines={1} style={styles.billName}>{`Sản phẩm: ${index + 1}. ${item_Name}`}</Text>
+          <Text numberOfLines={1} style={styles.billName}>
+            {`${index + 1}. ${item_Name}: `}
+            <Text style={{ fontWeight: 'bold' }}>{`${soBich} ${div_Unit}`}</Text>
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onSetCheck} style={styles.checkbox}>
           <Icon name={check ? 'check-square-o' : 'square-o'} type="fa" color={getColor()} />
@@ -148,18 +151,19 @@ const styles = StyleSheet.create({
     marginVertical: measures.marginSmall
   },
   billName: {
+    fontSize: measures.fontSizeSmall,
     ...commonStyles.text,
     color: colors.primaryColor,
-    marginLeft: measures.marginMedium,
+    marginLeft: measures.marginMedium
   },
   checkbox: {
-    width: measures.defaultUnit * 4,
+    width: measures.defaultUnit * 4
   },
   left: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
     overflow: 'hidden',
-    marginRight: measures.marginSmall,
+    marginRight: measures.marginSmall
   }
 });

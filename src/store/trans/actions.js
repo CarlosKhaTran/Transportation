@@ -2,10 +2,18 @@
 
 import * as constants from './constants';
 
-export const getListBill = (storeID: string, cb: (isSuccess: boolean) => void) => ({
-  type: constants.GET_LIST_BILLS,
+export const getListBill = () => ({
+  type: constants.GET_LIST_BILLS
+});
+
+export const geStoreInfo = (storeID: String, cb: (iSuccess: boolean) => void) => ({
+  type: constants.GET_STORE_INFO,
   payload: {
     storeID,
-    cb,
+    cb
   }
+});
+
+export const getTotalBillsCount = () => ({
+  type: constants.GET_TOTAL_BILLS_COUNT
 });
