@@ -18,6 +18,10 @@ export default (
   switch (action.type) {
     case constants.RECEIVE_TOKEN:
       return { ...state, storeID: action.payload.storeID, accessToken: action.payload.accessToken };
+    case constants.LOG_OUT:
+      return {
+        ...initState
+      };
     default:
       return { ...state };
   }

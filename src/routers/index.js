@@ -26,7 +26,10 @@ export default createAppContainer(
       [SCREENS.TRANSPORT_BILL]: {
         screen: createDrawerNavigator(
           {
-            [SCREENS.TRANSPORT_BILL]: pages.TransportBill
+            [SCREENS.TRANSPORT_BILL]: pages.TransportBill,
+            [SCREENS.LOG_IN_BY_STOREID]: {
+              screen: pages.LogInByStoreID
+            }
           },
           {
             drawerOpenRoute: 'DrawerOpen',

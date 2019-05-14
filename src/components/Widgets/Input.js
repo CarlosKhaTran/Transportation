@@ -265,13 +265,27 @@ export default class Input extends Component<Props, State> {
             <TouchableOpacity
               key="2"
               style={{
-                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
               }}
               onPress={() => {
                 if (openPicker) openPicker();
               }}
             />
           ]
+        )}
+        {value !== '' && type !== 'select' && editable && (
+          <TouchableOpacity
+            style={styles.eyeButton}
+            onPress={() => {
+              if (onChangeValue) onChangeValue('', name);
+            }}
+          >
+            <Icon name="ios-backspace" color={colors.gray} size="small" />
+          </TouchableOpacity>
         )}
         {!_.isEmpty(appendText) && (
           <Text
@@ -291,9 +305,9 @@ export default class Input extends Component<Props, State> {
           </TouchableOpacity>
         )}
         {appendIcon ? (
-          <TouchableOpacity style={styles.eyeButton} onPress={this.toggleEyeButton}>
+          <View style={styles.eyeButton}>
             <Icon name={appendIcon} size="small" color={appendIconColor} />
-          </TouchableOpacity>
+          </View>
         ) : null}
       </Animated.View>
     );

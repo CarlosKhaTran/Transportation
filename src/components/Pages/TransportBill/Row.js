@@ -36,8 +36,8 @@ export default ({
     }
   };
   const onChangeValue = (value: string) => {
-    setNotes(value);
     setCheck(false);
+    onCheck(item_Code, false);
     setActualReceived(value);
     onChangeBill(value, item_Code);
   };
@@ -89,8 +89,7 @@ export default ({
             prependIconColor={colors.rose}
             prependIconName="truck-delivery"
             prependIconType="mdc"
-            appendIcon="ios-checkmark"
-            appendIconColor={colors.softRed}
+            appendText={div_Unit}
           />
           <Input
             value={actualReceived}
@@ -102,6 +101,7 @@ export default ({
             placeholderText="SL thực nhận"
             prependIconColor={colors.jaffa}
             prependIconName="ios-cube"
+            // appendText={div_Unit}
           />
           <Input
             value={notes || ''}

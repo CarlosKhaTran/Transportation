@@ -62,7 +62,7 @@ export class ComfirmStoreState extends React.Component<Props, State> {
             <View style={commonStyles.fill}>
               <Button
                 type="secondary"
-                title="Có vấn đề"
+                title="Sự cố"
                 block
                 onPress={() => this.navigate(SCREENS.REPORT_STORE)}
               />
@@ -70,7 +70,7 @@ export class ComfirmStoreState extends React.Component<Props, State> {
             <View style={commonStyles.fill}>
               <Button
                 type="primary"
-                title="Tải đơn hàng"
+                title="Nhận hàng"
                 block
                 onPress={() => this.navigate(SCREENS.TRANSPORT_BILL)}
               />

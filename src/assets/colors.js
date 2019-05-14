@@ -14,7 +14,7 @@ const colors: { [key: string]: string } = {
   ming: '#336e7b',
   sunglo: '#f2c4c4',
   mango: '#F9DD71',
-  overlay: 'rgba(0,0,0,0.6)',
+  overlay: 'rgba(0,0,0,0.3)',
   blue: '#1DBEF0',
   tree: '#68c3a3',
   green: '#89E0B3',
@@ -36,6 +36,6 @@ const colors: { [key: string]: string } = {
   lemon: '#f7ca18',
   lightGreen: '#7befb2',
   mediumGreen: '#4ecdc4',
-  darkGreen: '#3fc380',
+  darkGreen: '#3fc380'
 };
 export default colors;

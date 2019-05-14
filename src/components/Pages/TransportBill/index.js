@@ -3,15 +3,16 @@ import React from 'react';
 import {
   View, StyleSheet, TouchableOpacity, Text, Alert
 } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { Container, Header, StoreInfo } from '../../Layout';
+import {
+  Container, Header, StoreInfo, SuccessView
+} from '../../Layout';
 import { colors, commonStyles, measures } from '../../../assets';
 import { Icon, MessagePopup } from '../../Widgets';
 import { Modal, Loading } from '../../Global';
 import Row from './Row';
-import SuccessView from './SuccessView';
 import { putInsertBill } from '../../../service';
 import { actions } from '../../../store';
 import { SCREENS } from '../../../routers';
@@ -20,7 +21,7 @@ import type { Bill } from './type';
 type Props = {
   navigation: NavigationScreenProp<{}>,
   totalItem: number,
-  getListBill: () => void
+  getListBill: () => void,
 };
 type State = {
   bills: Array<Bill>,
@@ -82,7 +83,11 @@ export class TransportBill extends React.Component<Props, State> {
   onReset = () => {
     Modal.hide();
     const { navigation } = this.props;
-    navigation.replace(SCREENS.LOG_IN_BY_STOREID);
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID })]
+    });
+    navigation.dispatch(resetAction);
   };
 
   onChangeNotes = (value: string, name: string) => {
@@ -154,8 +159,8 @@ export class TransportBill extends React.Component<Props, State> {
       <MessagePopup
         leftTitle="OK"
         rightTitle="Cancel"
-        title={isMissing ? 'CHƯA XÁC NHẬN ĐỦ!' : 'GỦI THÔNG TIN'}
-        message={isMissing ? 'Ban có muốn tiếp tục' : 'Bấm Ok để gửi thông tin'}
+        title="GỦI THÔNG TIN"
+        message="Bấm Ok để gửi thông tin"
         leftAction={this.onInsert}
         rightAction={() => Modal.hide()}
       />
@@ -219,13 +224,16 @@ export class TransportBill extends React.Component<Props, State> {
         <TouchableOpacity style={styles.sendButton} onPress={this.onSubmit}>
           <Icon name="ios-send" color={colors.white} />
         </TouchableOpacity>
+        <TouchableOpacity style={styles.backButton} onPress={this.onBack}>
+          <Icon name="ios-arrow-back" color={colors.lightPrimaryColor} />
+        </TouchableOpacity>
       </Container>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  getListBill: () => dispatch(actions.getListBill())
+  getListBill: () => dispatch(actions.getListBill()),
 });
 
 const mapStateToProps = state => ({
@@ -255,5 +263,17 @@ const styles = StyleSheet.create({
   flatList: { paddingTop: measures.paddingMedium, paddingBottom: measures.paddingLong * 4 },
   confirmText: {
     ...commonStyles.textBold
+  },
+  backButton: {
+    ...commonStyles.shadow,
+    width: measures.defaultUnit * 6,
+    height: measures.defaultUnit * 6,
+    borderRadius: measures.defaultUnit * 3,
+    backgroundColor: colors.lightGray,
+    bottom: measures.marginMedium,
+    left: measures.marginMedium + measures.defaultUnit,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute'
   }
 });

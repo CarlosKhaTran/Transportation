@@ -15,7 +15,8 @@ import { actions } from '../../store';
 
 type Props = {
   navigation: NavigationScreenProp<{}>,
-  geStoreInfo: (storeID: string, cb: (isSucess: boolean) => void) => void
+  geStoreInfo: (storeID: string, cb: (isSucess: boolean) => void) => void,
+  logOut: () => void
 };
 type State = {
   storeID: string,
@@ -27,6 +28,13 @@ export class LogInByStoreID extends React.Component<Props, State> {
     storeID: '',
     storeIDError: false
   };
+
+  componentDidMount() {
+    const { logOut, navigation } = this.props;
+    this.didBlurSubscription = navigation.addListener('didFocus', () => {
+      logOut();
+    });
+  }
 
   onChangeValue = (value: string, name: string) => {
     this.setState({
@@ -61,6 +69,8 @@ export class LogInByStoreID extends React.Component<Props, State> {
     }
     geStoreInfo(storeID, this.callBack);
   };
+
+  didBlurSubscription: any;
 
   render() {
     const { storeID, storeIDError } = this.state;
@@ -98,7 +108,8 @@ export class LogInByStoreID extends React.Component<Props, State> {
 const mapDispatchToProps = (dispatch: Function) => ({
   geStoreInfo: (storeID: string, cb: (isSucess: boolean) => void) => {
     dispatch(actions.geStoreInfo(storeID, cb));
-  }
+  },
+  logOut: () => dispatch(actions.logOut())
 });
 
 export default connect(

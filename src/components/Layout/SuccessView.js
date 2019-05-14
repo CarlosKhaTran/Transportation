@@ -13,7 +13,7 @@ type Props = {
 type State = {};
 export default class SuccessView extends React.PureComponent<Props, State> {
   static defaultProps = {
-    title: 'CHÚC MỪNG',
+    title: 'THÔNG BÁO',
     message: 'GỬI THÔNG TIN THÀNH CÔNG!'
   };
 

@@ -13,7 +13,7 @@ import * as commonActions from './common/actions';
 const config = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['transStore']
+  blacklist: ['transStore', 'commonStore', 'authStore']
 };
 
 const createReducers = () => persistReducer(

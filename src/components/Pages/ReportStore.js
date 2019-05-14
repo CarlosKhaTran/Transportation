@@ -12,8 +12,7 @@ import {
   Alert,
   Image
 } from 'react-native';
-
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, NavigationActions, StackActions } from 'react-navigation';
 import ImagePicker from 'react-native-image-crop-picker';
 import {
   Container, Header, StoreInfo, SelectLayout, SuccessView
@@ -72,7 +71,10 @@ export class ComfirmStoreState extends React.Component<Props, State> {
 
   openCamera = async (key: number) => {
     const { image } = this.state;
-    const img = await ImagePicker.openCamera({});
+    const img = await ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 400
+    });
     image[key] = img;
     this.setState({
       image: [...image]
@@ -90,7 +92,11 @@ export class ComfirmStoreState extends React.Component<Props, State> {
   onFinish = () => {
     const { navigation } = this.props;
     Modal.hide();
-    navigation.replace(SCREENS.LOG_IN_BY_STOREID);
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID })]
+    });
+    navigation.dispatch(resetAction);
   };
 
   onSendReport = async () => {
@@ -102,19 +108,23 @@ export class ComfirmStoreState extends React.Component<Props, State> {
         Alert.alert('Không hợp lệ', 'Vui lòng chọn loại vấn đề!');
         return;
       }
+      const imageList = image.filter(item => item !== null && item !== undefined);
+      if (!imageList || imageList.length === 0) {
+        Alert.alert('Không hợp lệ', 'Vui lòng upload ít nhất một ảnh!');
+        return;
+      }
       Loading.show();
       const reportId = await addNewReport({
         issue,
         note,
         storeID
       });
-      const imageList = image.filter(item => item !== null && item !== undefined);
-      if (imageList && imageList.length) {
-        const result = await Promise.all(imageList.map(el => uploadImage({ image: el, reportId })));
-        if (result) {
-          Loading.hide();
-          Modal.show(<SuccessView onBack={this.onFinish} />, false);
-        }
+      const result = await Promise.all(imageList.map(el => uploadImage({ image: el, reportId })));
+      if (result) {
+        Loading.hide();
+        Modal.show(<SuccessView onBack={this.onFinish} />, false);
+      } else {
+        throw new Error();
       }
 
       Loading.hide();
@@ -131,12 +141,12 @@ export class ComfirmStoreState extends React.Component<Props, State> {
     } = this.state;
     const issueInfo = issueList.find(el => el.rowId === issue);
     return (
-      <Container>
+      <Container haveKeyboard>
         <Header handleLeftButton={this.onBack} title="BÁO CÁO VẤN ĐỀ" />
         <View style={styles.content}>
           <StoreInfo />
           <ScrollView style={styles.scrollView}>
-            <Text style={styles.rowTitle}>Báo cáo vấn đề</Text>
+            <Text style={styles.rowTitle}>Báo cáo vấn đề (*)</Text>
             <Input
               name="issue"
               placeholderText="Chọn vấn đề"
@@ -155,12 +165,13 @@ export class ComfirmStoreState extends React.Component<Props, State> {
               placeholder="Ghi chú"
               style={styles.textArea}
               multiline
+              returnKeyType="go"
               numberOfLines={4}
               onChangeText={value => this.setState({ note: value })}
               value={note}
             />
             <Text style={[styles.rowTitle, { marginTop: measures.marginMedium }]}>
-              Đính kèm ảnh
+              Đính kèm ảnh (*) - Đính kèm ít nhất một ảnh
             </Text>
             <View style={styles.imageContainer}>
               {_.range(0, 3).map(key => (image[key] ? (

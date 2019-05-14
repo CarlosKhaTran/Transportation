@@ -4,7 +4,7 @@ import * as constants from './constants';
 const initState = {
   totalItem: null,
   storeInfo: {},
-  limit: 5,
+  limit: 20,
   currentPage: 1,
   bills: []
 };
@@ -23,6 +23,10 @@ export default (state: Object = initState, action: { type: string, payload: Obje
       return {
         ...state,
         totalItem: action.payload
+      };
+    case constants.LOG_OUT:
+      return {
+        ...initState
       };
     default:
       return { ...state };

@@ -3,11 +3,11 @@ import React from 'react';
 import {
   StyleSheet, View, Text, TouchableOpacity, ScrollView, Image
 } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, StackActions, NavigationActions } from 'react-navigation';
 import { Icon, Button } from '../Widgets';
 import { colors, measures, commonStyles } from '../../assets';
 import Container from './Container';
-import { SCREENS } from '../../routers';
+import SCREENS from '../../routers/screens';
 
 type Props = {
   navigation: NavigationScreenProp<{}>
@@ -16,25 +16,48 @@ type Props = {
 const rows: Array<{
   title: string,
   iconType?: string,
-  iconName: string
+  iconName: string,
+  screenName: string
 }> = [
   {
+    title: 'Home',
+    iconName: 'ios-home',
+    screenName: SCREENS.TRANSPORT_BILL
+  },
+  {
     title: 'Đổi mật khẩu',
-    iconName: 'ios-settings'
+    iconName: 'ios-settings',
+    screenName: ''
   },
   {
     title: 'Tài khoản',
-    iconName: 'ios-mail'
+    iconName: 'ios-mail',
+    screenName: ''
   }
 ];
 
 export default class Drawer extends React.PureComponent<Props> {
   signOut = () => {
     const { navigation } = this.props;
-    navigation.replace(SCREENS.LOG_IN_BY_STOREID);
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID })]
+    });
+    navigation.dispatch(resetAction);
+  };
+
+  navigate = (item: Object) => {
+    const { navigation } = this.props;
+    if (navigation.state.routeName === item.screenName) {
+      navigation.toggleDrawer();
+      return;
+    }
+    navigation.dispatch(NavigationActions.navigate({ routeName: item.screenName }));
   };
 
   render() {
+    const { navigation } = this.props;
+    const { routeName } = navigation.state;
     return (
       <Container>
         <View style={styles.header}>
@@ -42,7 +65,14 @@ export default class Drawer extends React.PureComponent<Props> {
         </View>
         <ScrollView>
           {rows.map((item, index) => (
-            <TouchableOpacity style={styles.row} key={index.toString()}>
+            <TouchableOpacity
+              style={[
+                styles.row,
+                routeName === item.screenName && { backgroundColor: colors.overlay }
+              ]}
+              key={index.toString()}
+              onPress={() => this.navigate(item)}
+            >
               <View style={styles.left}>
                 <Icon
                   name={item.iconName}
@@ -73,6 +103,7 @@ export default class Drawer extends React.PureComponent<Props> {
 
 const styles = StyleSheet.create({
   header: {
+    marginTop: 20,
     height: measures.defaultUnit * 15,
     width: '100%',
     flexDirection: 'row',

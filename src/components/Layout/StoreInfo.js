@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { StyleSheet, View, Text } from 'react-native';
 import { commonStyles, measures, colors } from '../../assets';
 
@@ -17,8 +18,20 @@ const renderBadge = (text: string, borderColor: string, backgroundColor: string)
   </Text>
 );
 
-export const storeInfo = ({ storeName, address }: { storeName: string, address: string }) => (
+export const storeInfo = ({
+  storeName,
+  address,
+  storeID
+}: {
+  storeName: string,
+  address: string,
+  storeID: string
+}) => (
   <View style={styles.generalInfo}>
+    <View style={styles.generalRow}>
+      <Text style={styles.generalObject}>Mã cửa hàng:</Text>
+      <View style={commonStyles.fill}>{renderBadge(storeID, colors.rose, colors.white)}</View>
+    </View>
     <View style={styles.generalRow}>
       <Text style={styles.generalObject}>Cửa Hàng:</Text>
       {renderBadge(storeName, colors.green, colors.white)}
@@ -27,19 +40,26 @@ export const storeInfo = ({ storeName, address }: { storeName: string, address: 
       <Text style={styles.generalObject}>Địa chỉ:</Text>
       <View style={commonStyles.fill}>{renderBadge(address, colors.rose, colors.white)}</View>
     </View>
+    <View style={styles.generalRow}>
+      <Text style={styles.generalObject}>Thời gian:</Text>
+      <View style={commonStyles.fill}>
+        {renderBadge(moment().format('L'), colors.rose, colors.white)}
+      </View>
+    </View>
   </View>
 );
 
 const mapStateToProps = state => ({
   storeName: state.transStore.storeInfo.store_Name,
-  address: state.transStore.storeInfo.address
+  address: state.transStore.storeInfo.address,
+  storeID: state.transStore.storeInfo.storeID
 });
 
 export default connect(mapStateToProps)(storeInfo);
 
 const styles = StyleSheet.create({
   generalInfo: {
-    padding: measures.paddingMedium,
+    padding: measures.paddingSmall,
     backgroundColor: colors.white
   },
   badgeText: {
@@ -49,12 +69,11 @@ const styles = StyleSheet.create({
   },
   generalRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: measures.marginTiny
+    alignItems: 'center'
   },
   generalObject: {
     ...commonStyles.text,
-    marginRight: measures.marginMedium,
-    fontWeight: '600'
+    fontWeight: '600',
+    width: 90
   }
 });
