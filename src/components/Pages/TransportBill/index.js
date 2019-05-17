@@ -21,7 +21,7 @@ import type { Bill } from './type';
 type Props = {
   navigation: NavigationScreenProp<{}>,
   totalItem: number,
-  getListBill: () => void,
+  getListBill: () => void
 };
 type State = {
   bills: Array<Bill>,
@@ -233,7 +233,7 @@ export class TransportBill extends React.Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  getListBill: () => dispatch(actions.getListBill()),
+  getListBill: () => dispatch(actions.getListBill())
 });
 
 const mapStateToProps = state => ({

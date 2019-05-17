@@ -1,5 +1,6 @@
 // @flow
 import Axios from 'axios';
+import { Alert } from 'react-native';
 import qs from 'querystring';
 import * as urls from './urls';
 import { TIMEOUT } from './config';
@@ -37,8 +38,10 @@ export async function putInsertBill({ bill }: { bill: Array<Bill> }) {
     const { data } = response;
     return data.items;
   } catch (error) {
-    console.log('Insert Bill Error', error);
-    return undefined;
+    if (error.response && error.response.data && error.response.data.message) {
+      Alert.alert('Lỗi', error.response.data.message);
+    }
+    throw error;
   }
 }
 
@@ -132,6 +135,9 @@ export async function addNewReport({
     const { data } = response;
     return data.id;
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.message) {
+      Alert.alert('Lỗi', error.response.data.message);
+    }
     throw error;
   }
 }
@@ -140,7 +146,6 @@ export async function uploadImage({ image, reportId }: { image: Object, reportId
   try {
     const url = urls.uploadImageUrl(reportId);
     const data: any = new FormData();
-    console.log('xxxx', image);
     data.append('', {
       uri: image.path,
       type: image.mime,
@@ -149,6 +154,9 @@ export async function uploadImage({ image, reportId }: { image: Object, reportId
     const response = await Axios.post(url, data);
     return response.data;
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.message) {
+      Alert.alert('Lỗi', error.response.data.message);
+    }
     throw error;
   }
 }

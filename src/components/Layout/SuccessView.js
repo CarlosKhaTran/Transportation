@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
     marginLeft: measures.marginMedium
   },
   body: {
+    ...commonStyles.text,
+    textAlign: 'center',
     color: colors.black,
     marginTop: measures.marginMedium,
     fontSize: measures.fontSizeLarge

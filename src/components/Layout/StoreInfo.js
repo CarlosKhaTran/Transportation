@@ -43,7 +43,7 @@ export const storeInfo = ({
     <View style={styles.generalRow}>
       <Text style={styles.generalObject}>Thời gian:</Text>
       <View style={commonStyles.fill}>
-        {renderBadge(moment().format('L'), colors.rose, colors.white)}
+        {renderBadge(moment().format('DD/MM/YYYY'), colors.rose, colors.white)}
       </View>
     </View>
   </View>

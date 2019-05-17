@@ -72,8 +72,8 @@ export class ComfirmStoreState extends React.Component<Props, State> {
   openCamera = async (key: number) => {
     const { image } = this.state;
     const img = await ImagePicker.openCamera({
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 400
+      compressImageMaxWidth: 600,
+      compressImageMaxHeight: 800
     });
     image[key] = img;
     this.setState({
@@ -129,7 +129,6 @@ export class ComfirmStoreState extends React.Component<Props, State> {
 
       Loading.hide();
     } catch (error) {
-      Alert.alert('Lỗi hệ thống', 'Vui lòng chọn thử lại!');
       Loading.hide();
     }
   };
@@ -145,7 +144,10 @@ export class ComfirmStoreState extends React.Component<Props, State> {
         <Header handleLeftButton={this.onBack} title="BÁO CÁO VẤN ĐỀ" />
         <View style={styles.content}>
           <StoreInfo />
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={{ paddingBottom: measures.paddingLong }}
+          >
             <Text style={styles.rowTitle}>Báo cáo vấn đề (*)</Text>
             <Input
               name="issue"
