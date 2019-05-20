@@ -1,5 +1,7 @@
 // @flow
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import { StyleSheet, View, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { Transition } from 'react-navigation-fluid-transitions';
@@ -8,12 +10,12 @@ import { colors } from '../../assets';
 import { SCREENS } from '../../routers';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>
-  // isReady: boolean,
+  navigation: NavigationScreenProp<{}>,
+  accessToken: string
 };
 type State = {};
 
-export default class Loading extends Component<Props, State> {
+export class Loading extends Component<Props, State> {
   state = {};
 
   componentWillUnmount() {}
@@ -21,8 +23,12 @@ export default class Loading extends Component<Props, State> {
   onLoadDone = () => {};
 
   componentDidMount = () => {
+    const { accessToken } = this.props;
+    if (accessToken) {
+      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    }
     setTimeout(() => {
-      this.navigate(SCREENS.LOG_IN_BY_STOREID);
+      this.navigate(accessToken ? SCREENS.LOG_IN_BY_STOREID : SCREENS.LOG_IN);
     }, 2000);
   };
 
@@ -38,6 +44,8 @@ export default class Loading extends Component<Props, State> {
   lottie: any;
 
   render() {
+    const { accessToken } = this.props;
+    console.log('zzzz', accessToken);
     return (
       <Container showBackground={false} style={styles.container}>
         <View style={styles.image}>
@@ -49,6 +57,15 @@ export default class Loading extends Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = (store) => {
+  console.log(store);
+  return {
+    accessToken: store.authStore.accessToken
+  };
+};
+
+export default connect(mapStateToProps)(Loading);
 
 const styles = StyleSheet.create({
   container: {

@@ -24,7 +24,7 @@ export default (state: Object = initState, action: { type: string, payload: Obje
         ...state,
         totalItem: action.payload
       };
-    case constants.LOG_OUT:
+    case constants.RESET:
       return {
         ...initState
       };

@@ -12,7 +12,7 @@ export default (state: Object = initState, action: Object) => {
         ...state,
         issueList: action.payload
       };
-    case constants.LOG_OUT:
+    case constants.RESET:
       return {
         ...initState
       };

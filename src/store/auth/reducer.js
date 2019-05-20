@@ -2,10 +2,7 @@
 import * as constants from './constants';
 
 const initState = {
-  user: {
-    storeID: null,
-    accessToken: null
-  }
+  accessToken: null
 };
 
 export default (
@@ -17,11 +14,7 @@ export default (
 ) => {
   switch (action.type) {
     case constants.RECEIVE_TOKEN:
-      return { ...state, storeID: action.payload.storeID, accessToken: action.payload.accessToken };
-    case constants.LOG_OUT:
-      return {
-        ...initState
-      };
+      return { ...state, accessToken: action.payload.accessToken };
     default:
       return { ...state };
   }

@@ -4,6 +4,6 @@ export const getIssueList = () => ({
   type: constants.GET_ISSUE_LIST
 });
 
-export const logOut = () => ({
-  type: constants.LOG_OUT
+export const reset = () => ({
+  type: constants.RESET
 });

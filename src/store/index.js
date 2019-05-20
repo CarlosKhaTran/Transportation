@@ -1,61 +1,47 @@
-import { persistStore, persistReducer } from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
 import {
-  createStore, applyMiddleware, compose, combineReducers
+  applyMiddleware, compose, createStore, combineReducers
 } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
+// import storage from 'redux-persist/lib/storage';
 import { authStore, transStore, commonStore } from './reducer';
-import createSaga from './saga';
 import * as transActions from './trans/actions';
 import * as authActions from './auth/actions';
 import * as commonActions from './common/actions';
+import createSaga from './saga';
 
-const config = {
+const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
-  blacklist: ['transStore', 'commonStore', 'authStore']
+  storage: AsyncStorage
 };
 
-const createReducers = () => persistReducer(
-  config,
-  combineReducers({
-    authStore,
-    transStore,
-    commonStore
-  })
-);
+// creates the store
+export default (() => {
+  /* ------------- Redux Configuration ------------- */
+  const middleware = [];
+  const enhancers = [];
 
-const createMiddlewares = (sagaMiddleware) => {
-  const middlewares = [];
-
-  // Saga Middleware
-  if (sagaMiddleware) {
-    middlewares.push(sagaMiddleware);
-  }
-  return applyMiddleware.apply({}, middlewares);
-};
-
-const buildStore = (reducers, initialState) => {
+  /* ------------- Saga Middleware ------------- */
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
-    createReducers(reducers),
-    initialState,
-    compose(createMiddlewares(sagaMiddleware))
+  middleware.push(sagaMiddleware);
+
+  /* ------------- Assemble Middleware ------------- */
+  enhancers.push(applyMiddleware(...middleware));
+
+  const persistedReducer = persistReducer(
+    persistConfig,
+    combineReducers({ authStore, transStore, commonStore })
   );
-
+  const store = createStore(persistedReducer, compose(...enhancers));
   const persistor = persistStore(store);
-  if (module.hot) {
-    module.hot.accept(() => {
-      store.replaceReducer(createReducers(reducers));
-    });
-  }
 
-  store.reducers = createReducers(reducers);
+  // kick off root saga
   sagaMiddleware.run(createSaga());
-  return { persistor, store };
-};
 
-export default buildStore();
+  return { store, persistor };
+})();
+
 export const actions = {
   ...transActions,
   ...authActions,

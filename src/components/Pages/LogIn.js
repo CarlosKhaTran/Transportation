@@ -60,12 +60,12 @@ export class LogIn extends React.Component<Props, State> {
   callback = (isSuccess: boolean) => {
     const { navigation } = this.props;
     if (isSuccess) {
-      navigation.navigate({ routeName: SCREENS.TRANSPORT_BILL, key: SCREENS.TRANSPORT_BILL });
+      navigation.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID, key: SCREENS.LOG_IN_BY_STOREID });
       return;
     }
     this.setState({
       usernameError: true,
-      passwordError: true,
+      passwordError: true
     });
   };
 
