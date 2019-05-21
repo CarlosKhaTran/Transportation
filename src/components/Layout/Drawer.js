@@ -3,6 +3,8 @@ import React from 'react';
 import {
   StyleSheet, View, Text, TouchableOpacity, ScrollView, Image
 } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationScreenProp, StackActions, NavigationActions } from 'react-navigation';
 import { Icon, Button } from '../Widgets';
 import { colors, measures, commonStyles } from '../../assets';
@@ -41,9 +43,11 @@ export default class Drawer extends React.PureComponent<Props, State> {
 
   signOut = () => {
     const { navigation } = this.props;
+    AsyncStorage.setItem('accessToken', '');
+    axios.defaults.headers.common.Authorization = '';
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID })]
+      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN })]
     });
     navigation.dispatch(resetAction);
   };

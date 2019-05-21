@@ -1,11 +1,18 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import Axios from 'axios';
+import {
+  View, StyleSheet, Text, Alert
+} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationScreenProp, StackActions, NavigationActions } from 'react-navigation';
 import { Container, Header } from '../Layout';
 import { Icon, Input, Button } from '../Widgets';
 import { colors, measures, commonStyles } from '../../assets';
+import { changePassword } from '../../service';
+import { Loading } from '../Global';
+import { SCREENS } from '../../routers';
 
 type Props = {
   navigation: NavigationScreenProp<{}>
@@ -20,15 +27,17 @@ type State = {
   confirmNewPasswordError: boolean
 };
 
+const initState: State = {
+  password: '',
+  newPassword: '',
+  passwordError: false,
+  newPasswordError: false,
+  confirmNewPassword: '',
+  confirmNewPasswordError: false
+};
+
 export class ChangePassword extends React.Component<Props, State> {
-  state = {
-    password: '',
-    newPassword: '',
-    passwordError: false,
-    newPasswordError: false,
-    confirmNewPassword: '',
-    confirmNewPasswordError: false
-  };
+  state = initState;
 
   openDrawer = () => {
     const { navigation } = this.props;
@@ -40,6 +49,57 @@ export class ChangePassword extends React.Component<Props, State> {
       [name]: value,
       [`${name}Error`]: false
     });
+  };
+
+  onReset = () => this.setState({
+    ...initState
+  });
+
+  checkValidPassword = (value: string) => value.length > 8 && /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value);
+
+  onSubmit = async () => {
+    const { password, newPassword, confirmNewPassword } = this.state;
+    if (!password || !newPassword || !confirmNewPassword) {
+      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      Alert.alert('Lỗi', 'Mật khẩu xác nhận không đúng');
+      return;
+    }
+    if (!this.checkValidPassword(newPassword)) {
+      Alert.alert('Lỗi', 'Mật khẩu yếu. Mật khẩu cần ít nhất 8 ký tự và có ký tự đặc biệt!');
+      return;
+    }
+    if (newPassword === password) {
+      Alert.alert('Lỗi', 'Mật khẩu mới bị trùng');
+      return;
+    }
+    Loading.show();
+    try {
+      const isSuccess = await changePassword({
+        password,
+        newPassword,
+        confirmNewPassword
+      });
+      if (!isSuccess) {
+        Alert.alert('Lỗi', 'Không thành công vui lòng kiểm tra và thử lại!');
+      } else {
+        AsyncStorage.setItem('accessToken', '');
+        Axios.defaults.headers.common.Authorization = '';
+        Alert.alert('Thành công', 'Vui lòng đăng nhập lại');
+        const { navigation } = this.props;
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN })]
+        });
+        navigation.dispatch(resetAction);
+      }
+      Loading.hide();
+    } catch (error) {
+      Alert.alert('Lỗi', 'Không thành công vui lòng kiểm tra và thử lại!');
+      Loading.hide();
+    }
   };
 
   render() {
@@ -107,10 +167,10 @@ export class ChangePassword extends React.Component<Props, State> {
             />
             <View style={styles.buttonContainer}>
               <View style={commonStyles.fill}>
-                <Button type="secondary" title="Reset" block onPress={() => {}} />
+                <Button type="secondary" title="Reset" block onPress={this.onReset} />
               </View>
               <View style={commonStyles.fill}>
-                <Button type="primary" title="Okay" block onPress={() => {}} />
+                <Button type="primary" title="Okay" block onPress={this.onSubmit} />
               </View>
             </View>
           </View>

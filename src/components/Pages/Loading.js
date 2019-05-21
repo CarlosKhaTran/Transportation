@@ -9,6 +9,7 @@ import { Transition } from 'react-navigation-fluid-transitions';
 import { Container } from '../Layout';
 import { colors } from '../../assets';
 import { SCREENS } from '../../routers';
+import { authorize } from '../../service';
 
 type Props = {
   navigation: NavigationScreenProp<{}>
@@ -20,11 +21,13 @@ export class Loading extends Component<Props, State> {
 
   async componentDidMount() {
     const accessToken = await AsyncStorage.getItem('accessToken');
+    let isValid = false;
     if (accessToken) {
       axios.defaults.headers.common.Authorization = accessToken;
+      isValid = await authorize();
     }
     setTimeout(() => {
-      this.navigate(accessToken ? SCREENS.LOG_IN_BY_STOREID : SCREENS.LOG_IN);
+      this.navigate(isValid ? SCREENS.LOG_IN_BY_STOREID : SCREENS.LOG_IN);
     }, 2000);
   }
 
@@ -40,8 +43,6 @@ export class Loading extends Component<Props, State> {
       params
     });
   };
-
-  lottie: any;
 
   render() {
     return (

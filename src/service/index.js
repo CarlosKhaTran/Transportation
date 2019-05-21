@@ -57,6 +57,41 @@ export async function putInsertBillRating({ ratingContent }: Object) {
   }
 }
 
+export async function authorize() {
+  try {
+    const url = urls.authorizeUrl();
+    const response = await Axios.get(url);
+    return typeof response.data === 'string';
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function changePassword({
+  password,
+  newPassword,
+  confirmNewPassword
+}: {
+  password: string,
+  newPassword: string,
+  confirmNewPassword: string
+}) {
+  try {
+    const url = urls.changePasswordUrl();
+    const response = await Axios.post(
+      url,
+      qs.stringify({
+        OldPassword: password,
+        NewPassword: newPassword,
+        ConfirmPassword: confirmNewPassword
+      })
+    );
+    return typeof response.data === 'string';
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function requestToken({ username, password }: { username: String, password: string }) {
   try {
     const url = urls.requestLoginUrl();

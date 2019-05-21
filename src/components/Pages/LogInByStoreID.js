@@ -29,6 +29,8 @@ export class LogInByStoreID extends React.Component<Props, State> {
     storeIDError: false
   };
 
+  didBlurSubscription: any;
+
   componentDidMount() {
     const { reset, navigation } = this.props;
     this.didBlurSubscription = navigation.addListener('didFocus', () => {
@@ -69,8 +71,6 @@ export class LogInByStoreID extends React.Component<Props, State> {
     }
     geStoreInfo(storeID, this.callBack);
   };
-
-  didBlurSubscription: any;
 
   render() {
     const { storeID, storeIDError } = this.state;
