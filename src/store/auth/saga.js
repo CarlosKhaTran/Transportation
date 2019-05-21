@@ -2,6 +2,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import _ from 'lodash';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 import type { Saga } from 'redux-saga';
 import * as constants from './constants';
 import { requestToken } from '../../service';
@@ -20,6 +21,7 @@ function* onRequestLogin(action: {
     const data = yield call(requestToken, { username, password });
     if (!_.isEmpty(data) && !data.error) {
       axios.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
+      AsyncStorage.setItem('accessToken', `Bearer ${data.access_token}`);
       yield put({
         type: constants.RECEIVE_TOKEN,
         payload: {

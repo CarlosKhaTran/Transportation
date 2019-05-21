@@ -27,16 +27,18 @@ const rows: Array<{
   {
     title: 'Đổi mật khẩu',
     iconName: 'ios-settings',
-    screenName: ''
-  },
-  {
-    title: 'Tài khoản',
-    iconName: 'ios-mail',
-    screenName: ''
+    screenName: SCREENS.CHANGE_PASSWORD
   }
 ];
 
-export default class Drawer extends React.PureComponent<Props> {
+type State = {
+  idx: number
+};
+export default class Drawer extends React.PureComponent<Props, State> {
+  state = {
+    idx: 0
+  };
+
   signOut = () => {
     const { navigation } = this.props;
     const resetAction = StackActions.reset({
@@ -46,9 +48,13 @@ export default class Drawer extends React.PureComponent<Props> {
     navigation.dispatch(resetAction);
   };
 
-  navigate = (item: Object) => {
+  navigate = (item: Object, index: number) => {
+    const { idx } = this.state;
     const { navigation } = this.props;
-    if (navigation.state.routeName === item.screenName) {
+    this.setState({
+      idx: index
+    });
+    if (index === idx) {
       navigation.toggleDrawer();
       return;
     }
@@ -56,8 +62,7 @@ export default class Drawer extends React.PureComponent<Props> {
   };
 
   render() {
-    const { navigation } = this.props;
-    const { routeName } = navigation.state;
+    const { idx } = this.state;
     return (
       <Container>
         <View style={styles.header}>
@@ -66,12 +71,9 @@ export default class Drawer extends React.PureComponent<Props> {
         <ScrollView>
           {rows.map((item, index) => (
             <TouchableOpacity
-              style={[
-                styles.row,
-                routeName === item.screenName && { backgroundColor: colors.overlay }
-              ]}
+              style={[styles.row, idx === index && { backgroundColor: colors.overlay }]}
               key={index.toString()}
-              onPress={() => this.navigate(item)}
+              onPress={() => this.navigate(item, index)}
             >
               <View style={styles.left}>
                 <Icon

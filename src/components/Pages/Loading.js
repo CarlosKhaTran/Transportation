@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import { StyleSheet, View, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
@@ -10,27 +11,26 @@ import { colors } from '../../assets';
 import { SCREENS } from '../../routers';
 
 type Props = {
-  navigation: NavigationScreenProp<{}>,
-  accessToken: string
+  navigation: NavigationScreenProp<{}>
 };
 type State = {};
 
 export class Loading extends Component<Props, State> {
   state = {};
 
-  componentWillUnmount() {}
-
-  onLoadDone = () => {};
-
-  componentDidMount = () => {
-    const { accessToken } = this.props;
+  async componentDidMount() {
+    const accessToken = await AsyncStorage.getItem('accessToken');
     if (accessToken) {
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      axios.defaults.headers.common.Authorization = accessToken;
     }
     setTimeout(() => {
       this.navigate(accessToken ? SCREENS.LOG_IN_BY_STOREID : SCREENS.LOG_IN);
     }, 2000);
-  };
+  }
+
+  componentWillUnmount() {}
+
+  onLoadDone = () => {};
 
   navigate = (screenName: string, params: Object = {}) => {
     const { navigation } = this.props;
@@ -44,8 +44,6 @@ export class Loading extends Component<Props, State> {
   lottie: any;
 
   render() {
-    const { accessToken } = this.props;
-    console.log('zzzz', accessToken);
     return (
       <Container showBackground={false} style={styles.container}>
         <View style={styles.image}>
@@ -58,14 +56,7 @@ export class Loading extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (store) => {
-  console.log(store);
-  return {
-    accessToken: store.authStore.accessToken
-  };
-};
-
-export default connect(mapStateToProps)(Loading);
+export default connect(null)(Loading);
 
 const styles = StyleSheet.create({
   container: {

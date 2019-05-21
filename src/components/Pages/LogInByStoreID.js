@@ -82,7 +82,7 @@ export class LogInByStoreID extends React.Component<Props, State> {
         <View style={styles.content}>
           <View style={styles.formContainer}>
             <View style={styles.formHeader}>
-              <Text style={styles.title}>Đăng Nhập</Text>
+              <Text style={styles.title}>Nhập mã cửa hàng</Text>
             </View>
             <Input
               name="storeID"
@@ -97,7 +97,7 @@ export class LogInByStoreID extends React.Component<Props, State> {
               autoFocus
               onChangeValue={this.onChangeValue}
             />
-            <Button title="ĐĂNG NHẬP" onPress={this.onLogin} />
+            <Button title="Nhận Hàng" onPress={this.onLogin} />
           </View>
         </View>
       </Container>

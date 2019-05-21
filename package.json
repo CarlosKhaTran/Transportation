@@ -15,7 +15,7 @@
     "moment": "^2.24.0",
     "querystring": "^0.2.0",
     "react": "16.8.3",
-    "react-native": "0.59.8",
+    "react-native": "0.59.5",
     "react-native-collapsible": "^1.4.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-image-crop-picker": "^0.24.0",

@@ -4,7 +4,6 @@ import {
 import createSagaMiddleware from 'redux-saga';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
-// import storage from 'redux-persist/lib/storage';
 import { authStore, transStore, commonStore } from './reducer';
 import * as transActions from './trans/actions';
 import * as authActions from './auth/actions';
@@ -13,7 +12,8 @@ import createSaga from './saga';
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage
+  storage: AsyncStorage,
+  blacklist: ['transStore', 'commonStore']
 };
 
 // creates the store

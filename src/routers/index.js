@@ -27,8 +27,8 @@ export default createAppContainer(
         screen: createDrawerNavigator(
           {
             [SCREENS.TRANSPORT_BILL]: pages.TransportBill,
-            [SCREENS.LOG_IN_BY_STOREID]: {
-              screen: pages.LogInByStoreID
+            [SCREENS.CHANGE_PASSWORD]: {
+              screen: pages.ChangePassword
             }
           },
           {

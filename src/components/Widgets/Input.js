@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     textAlign: 'right'
   },
   eyeButton: {
-    width: measures.defaultUnit * 6,
+    width: measures.defaultUnit * 4,
     justifyContent: 'center',
     alignItems: 'center'
   },

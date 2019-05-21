@@ -6,3 +6,4 @@ export { default as TransportBill } from './TransportBill';
 export { default as LogInByStoreID } from './LogInByStoreID';
 export { default as ComfirmStoreState } from './ComfirmStoreState';
 export { default as ReportStore } from './ReportStore';
+export { default as ChangePassword } from './ChangePassword';
