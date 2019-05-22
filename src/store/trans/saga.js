@@ -45,22 +45,29 @@ function* onGetStoreInfo({
     yield put(globalActions.startLoading());
     const { storeID, cb } = payload;
     const data = yield call(getStoreInfo, { storeID });
-    if (!_.isEmpty(data)) {
-      yield put({
-        type: constants.GET_STORE_INFO_SUCCESS,
-        payload: {
+    const date = moment().format('YYYY-MM-DD');
+    const totalBill = yield call(getTotalBillsCount, { storeID, date });
+    console.log('>>>>', totalBill);
+    const isSuccess = !_.isEmpty(data) && typeof totalBill === 'number';
+    if (isSuccess) {
+      cb(true);
+    } else {
+      cb(false);
+    }
+    yield put({
+      type: constants.GET_STORE_INFO_SUCCESS,
+      payload: isSuccess
+        ? {
           ...data,
           storeID
         }
-      });
-      cb(true);
-      yield put(globalActions.endLoading());
-      return;
-    }
-    cb(false);
+        : {},
+      totalBill: isSuccess ? totalBill : 0
+    });
     yield put(globalActions.endLoading());
   } catch (error) {
-    console.log('xxx', error);
+    const { cb } = payload;
+    cb(false);
     yield put(globalActions.endLoading());
   }
 }

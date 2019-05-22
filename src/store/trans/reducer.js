@@ -12,7 +12,7 @@ const initState = {
 export default (state: Object = initState, action: { type: string, payload: Object }) => {
   switch (action.type) {
     case constants.GET_STORE_INFO_SUCCESS:
-      return { ...state, storeInfo: action.payload };
+      return { ...state, storeInfo: action.payload, totalItem: action.totalBill };
     case constants.GET_LIST_BILLS_SUCCESS:
       return {
         ...state,

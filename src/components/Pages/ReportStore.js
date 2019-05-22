@@ -94,7 +94,7 @@ export class ComfirmStoreState extends React.Component<Props, State> {
     Modal.hide();
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID })]
+      actions: [NavigationActions.navigate({ routeName: SCREENS.COMFIRM_STORE_STATE })]
     });
     navigation.dispatch(resetAction);
   };

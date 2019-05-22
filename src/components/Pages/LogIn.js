@@ -60,7 +60,10 @@ export class LogIn extends React.Component<Props, State> {
   callback = (isSuccess: boolean) => {
     const { navigation } = this.props;
     if (isSuccess) {
-      navigation.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID, key: SCREENS.LOG_IN_BY_STOREID });
+      navigation.navigate({
+        routeName: SCREENS.COMFIRM_STORE_STATE,
+        key: SCREENS.COMFIRM_STORE_STATE
+      });
       return;
     }
     this.setState({

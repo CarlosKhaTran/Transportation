@@ -27,7 +27,7 @@ export class Loading extends Component<Props, State> {
       isValid = await authorize();
     }
     setTimeout(() => {
-      this.navigate(isValid ? SCREENS.LOG_IN_BY_STOREID : SCREENS.LOG_IN);
+      this.navigate(isValid ? SCREENS.COMFIRM_STORE_STATE : SCREENS.LOG_IN);
     }, 2000);
   }
 

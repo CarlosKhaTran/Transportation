@@ -82,11 +82,12 @@ export class TransportBill extends React.Component<Props, State> {
 
   onReset = () => {
     Modal.hide();
-    const { navigation } = this.props;
+    const { navigation, reset } = this.props;
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: SCREENS.LOG_IN_BY_STOREID })]
+      actions: [NavigationActions.navigate({ routeName: SCREENS.COMFIRM_STORE_STATE })]
     });
+    reset();
     navigation.dispatch(resetAction);
   };
 
@@ -123,17 +124,6 @@ export class TransportBill extends React.Component<Props, State> {
         notes: notesList[item.item_Code] || null
       };
     });
-    const wrongNode = listBills.find(item => item.actual_Received > item.soBich);
-    if (wrongNode) {
-      const indexof = listBills.indexOf(wrongNode);
-      Alert.alert(
-        'Thông tin không hợp lệ',
-        `Sản phâm ${indexof + 1}. ${
-          wrongNode.item_Name
-        } có số lượng thực nhận lớn hơn số lượng chuyển hàng. Vui lòng kiểm tra lại`
-      );
-      return;
-    }
     Loading.show();
     putInsertBill({ bill: listBills })
       .then(() => {
@@ -233,7 +223,8 @@ export class TransportBill extends React.Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  getListBill: () => dispatch(actions.getListBill())
+  getListBill: () => dispatch(actions.getListBill()),
+  reset: () => dispatch(actions.reset())
 });
 
 const mapStateToProps = state => ({

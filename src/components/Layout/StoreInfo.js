@@ -29,6 +29,12 @@ export const storeInfo = ({
 }) => (
   <View style={styles.generalInfo}>
     <View style={styles.generalRow}>
+      <Text style={styles.generalObject}>Thời gian:</Text>
+      <View style={commonStyles.fill}>
+        {renderBadge(moment().format('DD/MM/YYYY'), colors.rose, colors.white)}
+      </View>
+    </View>
+    <View style={styles.generalRow}>
       <Text style={styles.generalObject}>Mã cửa hàng:</Text>
       <View style={commonStyles.fill}>{renderBadge(storeID, colors.rose, colors.white)}</View>
     </View>
@@ -39,12 +45,6 @@ export const storeInfo = ({
     <View style={styles.generalRow}>
       <Text style={styles.generalObject}>Địa chỉ:</Text>
       <View style={commonStyles.fill}>{renderBadge(address, colors.rose, colors.white)}</View>
-    </View>
-    <View style={styles.generalRow}>
-      <Text style={styles.generalObject}>Thời gian:</Text>
-      <View style={commonStyles.fill}>
-        {renderBadge(moment().format('DD/MM/YYYY'), colors.rose, colors.white)}
-      </View>
     </View>
   </View>
 );

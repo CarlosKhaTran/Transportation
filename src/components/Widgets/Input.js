@@ -106,6 +106,10 @@ export default class Input extends Component<Props, State> {
   }
 
   onFocus = () => {
+    const { _value } = this.state;
+    if (_value === 1) {
+      return;
+    }
     Animated.timing(this.state.transitionAnimValue, {
       toValue: 1,
       duration: 100,
@@ -168,7 +172,7 @@ export default class Input extends Component<Props, State> {
     if (onActive) {
       return colors.lightPrimaryColor;
     }
-    return colors.smoke;
+    return '#6c7a89';
   };
 
   render() {
@@ -212,6 +216,7 @@ export default class Input extends Component<Props, State> {
             position: 'absolute',
             left: measures.defaultUnit * 3.5,
             alignSelf: 'center',
+            borderRadius: 5,
             backgroundColor: _value === 0 ? colors.transparent : colors.white,
             transform: [
               {
