@@ -36,9 +36,17 @@ const initState = {
 export class ComfirmStoreState extends React.Component<Props, State> {
   state = { ...initState };
 
+  didBlurSubscription;
+
   componentDidMount() {
-    const { getTotalBillsCount } = this.props;
+    const { getTotalBillsCount, navigation, reset } = this.props;
     getTotalBillsCount();
+    this.didBlurSubscription = navigation.addListener('didFocus', () => {
+      this.setState({
+        ...initState
+      });
+      reset();
+    });
   }
 
   onBack = () => {

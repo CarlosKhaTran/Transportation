@@ -82,12 +82,11 @@ export class TransportBill extends React.Component<Props, State> {
 
   onReset = () => {
     Modal.hide();
-    const { navigation, reset } = this.props;
+    const { navigation } = this.props;
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: SCREENS.COMFIRM_STORE_STATE })]
     });
-    reset();
     navigation.dispatch(resetAction);
   };
 
